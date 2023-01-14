@@ -1,4 +1,5 @@
-import { gql } from '@apollo/client'
+//@ts-ignore
+import { gql } from '@apollo/client';
 
 export const STRUCTURE_LIST = gql`
 query GetAllStructures {
@@ -21,3 +22,26 @@ mutation DeleteStructure($input: deleteStructureInput!) {
     updated_at
   }
 }`
+
+export const UPDATE_STRUCTURE = gql`
+mutation UpdateStructure($input: updateStructureInput!) {
+  updateStructure(input: $input) {
+    _id
+    bina_no
+    active
+    created_at
+    updated_at
+  }
+}
+`
+export const GET_STRUCTURE = gql`
+query GetStructure($input: getStructureInput!) {
+  getStructure(input: $input) {
+    _id
+    bina_no
+    active
+    created_at
+    updated_at
+  }
+}
+`

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { HttpLink, ApolloClient, InMemoryCache, DefaultOptions } from "@apollo/client";
 
 const defaultOptions: DefaultOptions = {
