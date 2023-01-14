@@ -45,3 +45,15 @@ query GetStructure($input: getStructureInput!) {
   }
 }
 `
+
+export const CREATE_STRUCTURE = gql`
+mutation CreateStructure($input: createStructureInput!) {
+  createStructure(input: $input) {
+    _id
+    bina_no
+    active
+    created_at
+    updated_at
+  }
+}
+`

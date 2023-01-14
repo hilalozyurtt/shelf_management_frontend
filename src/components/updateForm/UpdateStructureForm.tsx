@@ -12,6 +12,7 @@ export default function UpdateStructureForm(props: any) {
     const [inputs, setInputs] = useState<structure>({ _id: "", bina_no: "" })
     const { data: qData, loading: qLoading, error: qError } = useQuery(GET_STRUCTURE, { variables: { input: { _id: props.structureId.id } } })
     const [updateStructure, { data, loading, error }] = useMutation(UPDATE_STRUCTURE)
+
     const handleChange = (event: any) => {
         const name = event.target.name
         const value = event.target.value
@@ -33,6 +34,7 @@ export default function UpdateStructureForm(props: any) {
     useEffect(() => {
         setInputs({ _id: qData?.getStructure._id, bina_no: qData?.getStructure.bina_no })
     }, [qData])
+    
     const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
     if (loading || qLoading) return <div>Loading</div>
     if (error || qError) return <div>Error</div>

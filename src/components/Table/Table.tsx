@@ -15,7 +15,9 @@ export default function Table(props: any) {
     }
   }
   return (
-    <><div className="relative overflow-x-auto mt-5">
+    
+    <>
+    <div className="relative overflow-x-auto mt-5">
       <table className="w-11/12 text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>

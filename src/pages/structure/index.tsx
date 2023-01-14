@@ -1,8 +1,9 @@
 import { DELETE_STRUCTURE, STRUCTURE_LIST } from "@/apollo/resolvers/productResolvers"
-import UpdateStructureForm from "@/components/createFrom/UpdateStructureForm"
+import UpdateStructureForm from "@/components/updateForm/UpdateStructureForm"
 import Table from "@/components/Table/Table"
 import { useQuery, useMutation, gql } from "@apollo/client"
 import { useState } from "react"
+import CreateForm from "@/components/structure/createForm/CreateForm"
 
 type showCompState = {
   table:boolean,
@@ -36,8 +37,12 @@ export default function Home() {
       Bina Yönetimi
     </h1>
     <hr/>
+    <button onClick={()=>{
+      setShowComp({table:false, updateForm:false, createForm:true})
+    }}>Bina Oluştur</button>
     {showComp.table ? <Table data={data?.getAllStructures} deleteFunc={deleteDataFromTable} updateState={updateState}/> : ""}
     {showComp.updateForm ? <UpdateStructureForm structureId={willUpdate} setShowComp={setShowComp}/> : ""}
+    {showComp.createForm ? <CreateForm  setShowComp={setShowComp}/> : ""}
     </>
   )
 }
