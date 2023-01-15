@@ -1,39 +1,61 @@
 import { DELETE_STRUCTURE, STRUCTURE_LIST } from "@/apollo/resolvers/productResolvers";
-import Table from "@/components/general_components/Table/Table";
 import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
-//@ts-ignore
-import dayjs, { dayjstr } from "util/dayjs";
+import dayjs from "dayjs";
 
 
 export default function StructureTable(props: any) {
     const { data, loading, error } = useQuery(STRUCTURE_LIST)
     const [deleteStructure, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_STRUCTURE)
-    const deleteDataFromTable = (id: any) => {
-        deleteStructure({
-            variables: {
-                input: { _id: id }
-            }, refetchQueries: [STRUCTURE_LIST]
-        })
-    }
-    function getNames() {
-        if (props.data.length > 0) {
-            const clearNames = Object.getOwnPropertyNames(props.data[0]).filter((n: any) => {
-                if (n != "_id" && n != "__typename") {
-                    return n
-                }
-            })
-            clearNames.push("İşlem")
-            return clearNames
-        } else {
-            return []
-        }
-    }
+
     if(loading) return <div>Loading</div>
     if(error) return <div>Error</div>
     return (
         <>
-            <Table data={data?.getAllStructures} deleteFunc={deleteDataFromTable} updateState={props.updateState} />
+            <div className="relative overflow-x-auto mt-5">
+      <table className="w-11/12 text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="px-6 py-3">Bina Numarası</th>
+            <th scope="col" className="px-6 py-3">Aktiflik</th>
+            <th scope="col" className="px-6 py-3">Ekleme Tarihi</th>
+            <th scope="col" className="px-6 py-3">Son Güncecllenme Tarihi</th>
+            <th scope="col" className="px-6 py-3">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.getAllStructures.map((d: any) => {
+            return (<tr key={d._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <td className="px-6 py-4">
+                {d.bina_no}
+              </td>
+              <td className="px-6 py-4">
+                <span className="text-green-500 hover:text-green-700">{d.active ? "Aktif" : "Pasif"}</span>
+              </td>
+              <td className="px-6 py-4">
+                {d.created_at}
+                {dayjs(d.created_at).format("LLL")}
+              </td>
+              <td className="px-6 py-4">
+                {d.updated_at}
+              </td>
+              <td className="px-6">
+                <button className="text-green-500 hover:text-green-700" onClick={()=>{
+                  props.updateState(d._id)
+                }} >Düzenle</button>
+                <button className="text-red-500 hover:text-red-700" onClick={() => {
+                  deleteStructure({
+                    variables: {
+                        input: { _id: d._id }
+                    }, refetchQueries: [STRUCTURE_LIST]
+                })
+                }}>Sil</button>
+              </td>
+            </tr>);
+          })}
+        </tbody>
+      </table>
+    </div>
         </>
     );
 }
