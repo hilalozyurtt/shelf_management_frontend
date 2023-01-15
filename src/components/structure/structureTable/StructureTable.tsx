@@ -1,4 +1,4 @@
-import { DELETE_STRUCTURE, STRUCTURE_LIST } from "@/apollo/resolvers/productResolvers";
+import { DELETE_STRUCTURE, STRUCTURE_LIST } from "@/modules/resolvers/structureResolvers";
 import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
 import dayjs from "dayjs";
