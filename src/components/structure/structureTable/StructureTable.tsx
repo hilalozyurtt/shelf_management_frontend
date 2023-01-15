@@ -33,11 +33,10 @@ export default function StructureTable(props: any) {
                 <span className="text-green-500 hover:text-green-700">{d.active ? "Aktif" : "Pasif"}</span>
               </td>
               <td className="px-6 py-4">
-                {d.created_at}
-                {dayjs(d.created_at).format("LLL")}
+                { new Date(d.created_at).toLocaleString("tr-TR")}
               </td>
               <td className="px-6 py-4">
-                {d.updated_at}
+              { new Date(d.updated_at).toLocaleString("tr-TR")}
               </td>
               <td className="px-6">
                 <button className="text-green-500 hover:text-green-700" onClick={()=>{
