@@ -1,5 +1,5 @@
 import React from "react";
-
+import dayjs from "dayjs";
 export default function Table(props: any) {
   function getNames() {
     if (props.data.length > 0) {
@@ -37,6 +37,7 @@ export default function Table(props: any) {
               </td>
               <td className="px-6 py-4">
                 {d.created_at}
+                {dayjs(d.created_at).format("LLL")}
               </td>
               <td className="px-6 py-4">
                 {d.updated_at}
