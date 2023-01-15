@@ -1,4 +1,4 @@
-import { GET_STRUCTURE, UPDATE_STRUCTURE } from "@/apollo/resolvers/productResolvers";
+import { GET_STRUCTURE, UPDATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
 import { useMutation, useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 

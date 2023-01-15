@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client"
-import { CREATE_STRUCTURE } from "@/apollo/resolvers/productResolvers";
+import { CREATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
 
 
 type structure = {
