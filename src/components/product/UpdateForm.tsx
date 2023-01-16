@@ -1,6 +1,7 @@
 import { GET_PRODUCT, UPDATE_PRODUCT } from "@/modules/resolvers/productResolvers";
 import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 
 type product = {
@@ -90,7 +91,10 @@ export default function UpdateProductForm(props: any) {
                 </div>
 
                 <div className="space-x-4 mt-8">
-                    <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
+                <button type="submit" >
+                <Button type="primary" loading={data?.updateProduct}>
+                    Click me!
+                </Button></button>
                     <button onClick={() => { props.setShowComp({ table: true, createForm: false, updateForm: false }) }} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50">Cancel</button>
                 </div>
             </form>
