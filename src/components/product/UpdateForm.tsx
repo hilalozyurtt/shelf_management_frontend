@@ -97,7 +97,7 @@ export default function UpdateProductForm(props: any) {
                             <option></option>
                             {stData?.getAllShelfs.map((s: any) => {
                                
-                                return <option value={s._id}>{s.raf_no}</option>
+                                return <option key={s._id} value={s._id}>{s.raf_no}</option>
                             })}
                         </select>
                     </div>

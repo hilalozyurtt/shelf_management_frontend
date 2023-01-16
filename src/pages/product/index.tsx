@@ -1,5 +1,5 @@
 import CreateForm from "@/components/product/CreateForm"
-import ProductTable from "@/components/product/productTable"
+import ProductTable from "@/components/product/ProductTable"
 import UpdateForm from "@/components/product/UpdateForm"
 import { useState } from "react"
 
