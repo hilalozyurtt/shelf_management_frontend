@@ -21,7 +21,7 @@ export default function UpdateProductForm(props: any) {
 
     const handleChange = (event: any) => {
         const name = event.target.name
-        const value = event.target.valuegetProduct
+        const value = event.target.value
         setInputs(values => ({ ...values, [name]: value }))
     }
 
@@ -83,7 +83,6 @@ export default function UpdateProductForm(props: any) {
                         <select name="shelf_id" className={className} onChange={handleChange} value={inputs?.shelf_id}>
                             <option></option>
                             {stData?.getAllShelfs.map((s: any) => {
-                               
                                 return <option key={s._id} value={s._id}>{s.raf_no}</option>
                             })}
                         </select>

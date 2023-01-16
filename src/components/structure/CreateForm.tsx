@@ -17,9 +17,9 @@ export default function CreateStructureForm(props: any) {
         setInputs(values => ({ ...values, [name]: value }))
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        createStructure({
+        await createStructure({
             variables: {
                 input: {
                     bina_no: inputs.bina_no

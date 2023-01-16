@@ -24,9 +24,9 @@ export default function CreateProductForm(props: any) {
         setInputs(values => ({ ...values, [name]: value }))
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        createStructure({
+        await createStructure({
             variables: {
                 input: {
                     arac: inputs.arac,
@@ -74,7 +74,7 @@ export default function CreateProductForm(props: any) {
                         <select name="shelf_id" className={className} onChange={handleChange}>
                             <option></option>
                             {stData?.getAllShelfs.map((s:any)=>{
-                                return <option value={s._id}>{s.raf_no}</option>
+                                return <option key={s._id} value={s._id}>{s.raf_no}</option>
                             })}
                         </select>
                     </div>

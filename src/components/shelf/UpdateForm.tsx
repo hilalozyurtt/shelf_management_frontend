@@ -10,7 +10,7 @@ type shelf = {
 }
 
 export default function UpdateShelfForm(props: any) {
-    console.log(props);
+
     const [inputs, setInputs] = useState<shelf>({_id: "", raf_no: "", structure_id: "" })
     const { data: shData, loading: shLoading, error: shError } = useQuery(GET_SHELF, { variables: { input: { _id: props.shelfId.id } } })
     const { data: stData, loading: stLoading, error: stError } = useQuery(STRUCTURE_LIST)
@@ -18,16 +18,16 @@ export default function UpdateShelfForm(props: any) {
 
     const handleChange = (event: any) => {
         const name = event.target.name
-        const value = event.target.valuegetShelf
+        const value = event.target.value
         setInputs(values => ({ ...values, [name]: value }))
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        updateShelf({
+        await updateShelf({
             variables: {
                 input: {
-                    id: inputs._id,
+                    _id: inputs._id,
                     raf_no: inputs.raf_no,
                     structure_id: inputs.structure_id
                 }
@@ -62,7 +62,7 @@ export default function UpdateShelfForm(props: any) {
                         <select name="structure_id" className={className} onChange={handleChange} value={inputs?.structure_id}>
                             <option></option>
                             {stData?.getAllStructures.map((s: any) => {
-                                return <option value={s._id}>{s.bina_no}</option>
+                                return <option key={s._id} value={s._id}>{s.bina_no}</option>
                             })}
                         </select>
                     </div>

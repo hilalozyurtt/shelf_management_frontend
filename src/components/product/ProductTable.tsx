@@ -1,28 +1,15 @@
 import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers'
+import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Tag, Button } from 'antd'
 import react from 'react'
 
 
-//! Şimdilik buradan aldım hilal rafları yapıp resolvera eklediği zaman bunu silip oradan alacağım
-const GET_ALL_SHELF = gql`
-query GetAllShelfs {
-  getAllShelfs {
-    _id
-    raf_no
-    structure_id
-    active
-    created_at
-    updated_at
-  }
-}
-`
-
 export default function ProductTable(props:any) {
     const { data, loading, error } = useQuery(GET_ALL_PRODUCTS)
     const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT)
-    const {data:shelfData,loading:shelfLoading, error: shelfError} = useQuery(GET_ALL_SHELF)
+    const {data:shelfData,loading:shelfLoading, error: shelfError} = useQuery(GET_ALL_SHELFS)
 
 
     if (loading || shelfLoading) return <div>Loading</div>
@@ -67,7 +54,7 @@ export default function ProductTable(props:any) {
                   {d.orjinal_no}
                 </td>
                 <td className="px-6 py-4">
-                  <Tag color="green">{shelfData?.getAllShelfs.find((s:any)=>s._id == d.shelf_id ).raf_no}</Tag>
+                  <Tag color="green">{shelfData?.getAllShelfs.find((s:any)=>s._id == d.shelf_id )?.raf_no}</Tag>
                 </td>
                 <td className="px-6 py-4">
                 <Tag color="gold">{new Date(d.created_at).toLocaleString("tr-TR")}</Tag>

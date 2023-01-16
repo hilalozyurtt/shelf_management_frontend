@@ -23,9 +23,9 @@ export default function CreateShelfForm(props: any) {
         console.log(inputs)
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        createShelf({
+        await createShelf({
             variables: {
                 input: {
                     raf_no: inputs.raf_no,
@@ -50,7 +50,7 @@ export default function CreateShelfForm(props: any) {
                         <select name="structure_id" className={className} onChange={handleChange}>
                             <option></option>
                             {stData?.getAllStructures.map((s:any)=>{
-                                return <option value={s._id}>{s.bina_no}</option>
+                                return <option key={s._id} value={s._id}>{s.bina_no}</option>
                             })}
                         </select>
                     </div>
