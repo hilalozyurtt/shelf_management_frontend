@@ -1,6 +1,7 @@
 import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
-import { Tag } from 'antd'
+import { Tag, Button } from 'antd'
 import react from 'react'
 
 
@@ -75,16 +76,18 @@ export default function ProductTable(props:any) {
                 <Tag color="gold">{new Date(d.updated_at).toLocaleString("tr-TR")}</Tag>
                 </td>
                 <td className="px-6">
-                  <button className="text-green-500 hover:text-green-700" onClick={() => {
+                <Button type="primary" className='bg-yellow-500' onClick={() => {
                     props.updateState(d._id)
-                  }} >Düzenle</button>
-                  <button className="text-red-500 hover:text-red-700" onClick={() => {
+                  }}>
+                  <EditOutlined />
+                </Button>
+                  <Button type="primary" className="bg-red-500 hover:bg-red-700" onClick={() => {
                     deleteProduct({
                       variables: {
                         input: { _id: d._id }
                       }, refetchQueries: [GET_ALL_PRODUCTS]
                     })
-                  }}>Sil</button>
+                  }}><DeleteOutlined /></Button>
                 </td>
               </tr>);
             })}

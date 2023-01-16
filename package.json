@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.0",
     "@apollo/client": "^3.7.4",
     "@next/font": "13.1.2",
     "@types/node": "18.11.18",
