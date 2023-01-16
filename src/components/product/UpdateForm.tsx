@@ -1,22 +1,7 @@
 import { GET_PRODUCT, UPDATE_PRODUCT } from "@/modules/resolvers/productResolvers";
-import { UPDATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
+import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
-
-//! Şimdilik buradan aldım hilal rafları yapıp resolvera eklediği zaman bunu silip oradan alacağım
-const GET_ALL_SHELF = gql`
-query GetAllShelfs {
-  getAllShelfs {
-    _id
-    raf_no
-    structure_id
-    active
-    created_at
-    updated_at
-  }
-}
-`
-
 
 type product = {
     _id: string,
@@ -31,16 +16,18 @@ type product = {
 export default function UpdateProductForm(props: any) {
     const [inputs, setInputs] = useState<product>({ _id: "", arac: "", name: "", oem_no: "", orjinal_no: "", ozellik: "", ozellik2: "", shelf_id: "" })
     const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId.id } } })
-    const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELF)
+    const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
     const [updateProduct, { data, loading, error }] = useMutation(UPDATE_PRODUCT)
 
     const handleChange = (event: any) => {
         const name = event.target.name
-        const value = event.target.value
+        const value = event.target.valuegetProduct
         setInputs(values => ({ ...values, [name]: value }))
     }
 
     const handleSubmit = (e: any) => {
+        console.log("burayageliyomu");
+        
         e.preventDefault()
         updateProduct({
             variables: {
@@ -104,7 +91,7 @@ export default function UpdateProductForm(props: any) {
                 </div>
 
                 <div className="space-x-4 mt-8">
-                    <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Save</button>
+                    <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
                     <button onClick={() => { props.setShowComp({ table: true, createForm: false, updateForm: false }) }} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50">Cancel</button>
                 </div>
             </form>

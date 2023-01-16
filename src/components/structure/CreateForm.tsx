@@ -7,7 +7,7 @@ type structure = {
     bina_no: string
 }
 
-export default function UpdateStructureForm(props: any) {
+export default function CreateStructureForm(props: any) {
     const [inputs, setInputs] = useState<structure>({ bina_no: "" })
     const [createStructure, { data, loading, error }] = useMutation(CREATE_STRUCTURE)
 

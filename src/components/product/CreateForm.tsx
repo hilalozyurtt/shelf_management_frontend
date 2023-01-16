@@ -1,22 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, gql, useQuery } from "@apollo/client"
 import { CREATE_PRODUCT } from "@/modules/resolvers/productResolvers";
-
-
-//! Şimdilik buradan aldım hilal rafları yapıp resolvera eklediği zaman bunu silip oradan alacağım
-const GET_ALL_SHELF =gql`
-query GetAllShelfs {
-  getAllShelfs {
-    _id
-    raf_no
-    structure_id
-    active
-    created_at
-    updated_at
-  }
-}
-`
-
+import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
 
 type product = {
     arac: string,
@@ -28,9 +13,9 @@ type product = {
     shelf_id: string
 }
 
-export default function UpdateStructureForm(props: any) {
+export default function CreateProductForm(props: any) {
     const [inputs, setInputs] = useState<product>({arac:"",name:"",oem_no:"",orjinal_no:"",ozellik:"",ozellik2:"",shelf_id:""})
-    const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELF)
+    const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
     const [createStructure, { data, loading, error }] = useMutation(CREATE_PRODUCT)
 
     const handleChange = (event:any) => {

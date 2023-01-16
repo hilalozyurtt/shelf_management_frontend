@@ -7,7 +7,6 @@ type structure = {
     bina_no: string
 }
 
-
 export default function UpdateStructureForm(props: any) {
     const [inputs, setInputs] = useState<structure>({ _id: "", bina_no: "" })
     const { data: qData, loading: qLoading, error: qError } = useQuery(GET_STRUCTURE, { variables: { input: { _id: props.structureId.id } } })

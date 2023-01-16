@@ -1,7 +1,7 @@
-import UpdateStructureForm from "@/components/structure/updateForm/UpdateStructureForm"
+import UpdateStructureForm from "@/components/structure/UpdateForm"
 import { useState } from "react"
-import CreateForm from "@/components/structure/createForm/CreateForm"
-import StructureTable from "@/components/structure/structureTable/StructureTable"
+import CreateStructureForm from "@/components/structure/CreateForm"
+import StructureTable from "@/components/structure/StructureTable"
 
 type showCompState = {
   table: boolean,
@@ -32,7 +32,7 @@ export default function Home() {
       }}>Bina Oluştur</button>
       {showComp.table ? <StructureTable updateState={updateState} /> : ""}
       {showComp.updateForm ? <UpdateStructureForm structureId={willUpdate} setShowComp={setShowComp} /> : ""}
-      {showComp.createForm ? <CreateForm setShowComp={setShowComp} /> : ""}
+      {showComp.createForm ? <CreateStructureForm setShowComp={setShowComp} /> : ""}
     </>
   )
 }
