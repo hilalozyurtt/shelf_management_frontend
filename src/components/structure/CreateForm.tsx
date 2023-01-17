@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client"
 import { CREATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
 import { Button, message, Space } from 'antd';
+import Router from "next/router";
 
 
 type structure = {
@@ -35,7 +36,7 @@ export default function CreateStructureForm(props: any) {
                 }
             }
         })
-        //props.setShowComp({ table: true, createForm: false, updateForm: false })
+        Router.push("/structure")
     }
 
     const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
