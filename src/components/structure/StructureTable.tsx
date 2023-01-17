@@ -2,6 +2,7 @@ import { DELETE_STRUCTURE, STRUCTURE_LIST } from "@/modules/resolvers/structureR
 import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 
 export default function StructureTable(props: any) {
@@ -42,6 +43,7 @@ export default function StructureTable(props: any) {
                 <button className="text-green-500 hover:text-green-700" onClick={()=>{
                   props.updateState(d._id)
                 }} >Düzenle</button>
+                <Link href={{pathname: "/structure/update_structure", query: {id:"adnan"}}}>ad</Link>
                 <button className="text-red-500 hover:text-red-700" onClick={() => {
                   deleteStructure({
                     variables: {
