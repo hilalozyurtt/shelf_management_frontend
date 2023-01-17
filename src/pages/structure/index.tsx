@@ -1,6 +1,3 @@
-import UpdateStructureForm from "@/components/structure/UpdateForm"
-import { useState } from "react"
-import CreateStructureForm from "@/components/structure/CreateForm"
 import StructureTable from "@/components/structure/StructureTable"
 import Link from "next/link"
 

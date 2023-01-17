@@ -1,8 +1,5 @@
-import CreateProductForm from "@/components/product/CreateForm"
 import ProductTable from "@/components/product/ProductTable"
-import UpdateProductForm from "@/components/product/UpdateForm"
 import Link from "next/link"
-import { useState } from "react"
 
 
 export default function Home() {

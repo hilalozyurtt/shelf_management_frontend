@@ -4,16 +4,6 @@ import UpdateShelfForm from "@/components/shelf/UpdateForm"
 import Link from "next/link"
 import { useState } from "react"
 
-type showCompState = {
-  table: boolean,
-  createForm: boolean,
-  updateForm: boolean
-}
-
-type willUpdate = {
-  id: string
-}
-
 export default function Home() {
 
   return (

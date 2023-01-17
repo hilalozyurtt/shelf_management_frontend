@@ -1,4 +1,3 @@
-import CreateStructureForm from "@/components/structure/CreateForm"
 import UpdateStructureForm from "@/components/structure/UpdateForm";
 import { useRouter } from 'next/router'
 

@@ -1,6 +1,6 @@
 import CreateShelfForm from "@/components/shelf/CreateForm"
 
-export default function CreteStructure(props: any){
+export default function CreteShelf(props: any){
 
   return(
     <>
