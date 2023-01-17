@@ -1,5 +1,6 @@
 import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers'
 import { useMutation, useQuery } from '@apollo/client'
+import Link from 'next/link'
 import react, { useState } from 'react'
 
 
@@ -38,9 +39,7 @@ export default function ShelfTable(props:any) {
                   {new Date(d.updated_at).toLocaleString("tr-TR")}
                 </td>
                 <td className="px-6">
-                  <button className="text-green-500 hover:text-green-700" onClick={() => {
-                    props.updateState(d._id)
-                  }} >Düzenle</button>
+                <Link className="text-green-500 hover:text-green-700" href={{ pathname: "/shelf/update_shelf", query: { id: d._id } }}>Düzenle</Link>
                   <button className="text-red-500 hover:text-red-700" onClick={() => {
                     deleteShelf({
                       variables: {

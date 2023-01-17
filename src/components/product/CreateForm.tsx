@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMutation, gql, useQuery } from "@apollo/client"
 import { CREATE_PRODUCT } from "@/modules/resolvers/productResolvers";
 import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
+import Router from "next/router";
 
 type product = {
     arac: string,
@@ -39,7 +40,7 @@ export default function CreateProductForm(props: any) {
                 }
             }
         })
-        props.setShowComp({ table: true, createForm: false, updateForm: false })
+        Router.push("/product")
     }
 
     const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"

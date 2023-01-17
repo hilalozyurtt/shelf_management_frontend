@@ -1,6 +1,7 @@
 import { GET_SHELF, UPDATE_SHELF } from "@/modules/resolvers/shelfResolvers";
 import { STRUCTURE_LIST } from "@/modules/resolvers/structureResolvers";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type shelf = {
@@ -12,7 +13,7 @@ type shelf = {
 export default function UpdateShelfForm(props: any) {
 
     const [inputs, setInputs] = useState<shelf>({_id: "", raf_no: "", structure_id: "" })
-    const { data: shData, loading: shLoading, error: shError } = useQuery(GET_SHELF, { variables: { input: { _id: props.shelfId.id } } })
+    const { data: shData, loading: shLoading, error: shError } = useQuery(GET_SHELF, { variables: { input: { _id: props.shelfId } } })
     const { data: stData, loading: stLoading, error: stError } = useQuery(STRUCTURE_LIST)
     const [updateShelf, { data, loading, error }] = useMutation(UPDATE_SHELF)
 
@@ -70,7 +71,7 @@ export default function UpdateShelfForm(props: any) {
 
                 <div className="space-x-4 mt-8">
                     <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
-                    <button onClick={() => { props.setShowComp({ table: true, createForm: false, updateForm: false }) }} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50">Cancel</button>
+                    <Link href={"/shelf"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Geri</Link>
                 </div>
             </form>
         </div>

@@ -3,6 +3,7 @@ import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useMutation, useQuery } from '@apollo/client'
 import { Tag, Button } from 'antd'
+import Link from 'next/link'
 import react from 'react'
 
 
@@ -63,6 +64,7 @@ export default function ProductTable(props:any) {
                 <Tag color="gold">{new Date(d.updated_at).toLocaleString("tr-TR")}</Tag>
                 </td>
                 <td className="px-6">
+                  <Link href={{pathname:"/update_product", query:{id:d._id}}}></Link>
                 <Button type="primary" className='bg-yellow-500' onClick={() => {
                     props.updateState(d._id)
                   }}>

@@ -2,6 +2,7 @@ import React, {useState } from "react";
 import { useMutation, useQuery } from "@apollo/client"
 import { CREATE_SHELF } from "@/modules/resolvers/shelfResolvers";
 import { STRUCTURE_LIST } from "@/modules/resolvers/structureResolvers";
+import  Router  from "next/router";
 
 
 type shelf = {
@@ -19,8 +20,6 @@ export default function CreateShelfForm(props: any) {
         const name = event.target.name
         const value = event.target.value
         setInputs(values => ({ ...values, [name]: value }))
-        console.log("***********");
-        console.log(inputs)
     }
 
     const handleSubmit = async (e: any) => {
@@ -33,7 +32,7 @@ export default function CreateShelfForm(props: any) {
                 }
             }
         })
-        props.setShowComp({ table: true, createForm: false, updateForm: false })
+        Router.push("/shelf")
     }
 
     const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
