@@ -1,7 +1,7 @@
 import { GET_PRODUCT, UPDATE_PRODUCT } from "@/modules/resolvers/productResolvers";
 import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { Button } from "antd";
+import { Button, message, Space } from 'antd';
 import React, { useEffect, useState } from "react";
 
 type product = {
@@ -19,7 +19,14 @@ export default function UpdateProductForm(props: any) {
     const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId.id } } })
     const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
     const [updateProduct, { data, loading, error }] = useMutation(UPDATE_PRODUCT)
+    const [messageApi, contextHolder] = message.useMessage();
 
+    if(data){
+        messageApi.open({
+            type: 'success',
+            content: 'Güncelleme başarılı',
+          });
+    }
     const handleChange = (event: any) => {
         const name = event.target.name
         const value = event.target.value
@@ -51,10 +58,11 @@ export default function UpdateProductForm(props: any) {
     }, [pData])
 
     const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-    if (loading || pLoading || stLoading) return <div>Loading</div>
+   if(stLoading || pLoading) return <div>loading</div>
     if (error || pError || stError) return <div>Error</div>
     return (
         <div className="p-8 rounded border border-gray-200">
+            {contextHolder}
             <h4 className="font-medium text-xl">Ürün Güncelleme Ekranı</h4>
             <p className="text-gray-600 mt-6">Bu alan sadece Adminlere açıktır!.</p>
             <form onSubmit={handleSubmit}>
@@ -91,10 +99,9 @@ export default function UpdateProductForm(props: any) {
                 </div>
 
                 <div className="space-x-4 mt-8">
-                <button type="submit" >
-                <Button type="primary" loading={data?.updateProduct}>
-                    Click me!
-                </Button></button>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                    Güncelle
+                </Button>
                     <button onClick={() => { props.setShowComp({ table: true, createForm: false, updateForm: false }) }} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50">Cancel</button>
                 </div>
             </form>

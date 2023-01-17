@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client"
 import { CREATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
+import { Button, message, Space } from 'antd';
 
 
 type structure = {
@@ -8,6 +9,14 @@ type structure = {
 }
 
 export default function CreateStructureForm(props: any) {
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const success = () => {
+    messageApi.open({
+        type: 'success',
+        content: 'This is a success message',
+    });
+    };
     const [inputs, setInputs] = useState<structure>({ bina_no: "" })
     const [createStructure, { data, loading, error }] = useMutation(CREATE_STRUCTURE)
 
@@ -26,12 +35,13 @@ export default function CreateStructureForm(props: any) {
                 }
             }
         })
-        props.setShowComp({ table: true, createForm: false, updateForm: false })
+        //props.setShowComp({ table: true, createForm: false, updateForm: false })
     }
 
     const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
     return (
         <div className="p-8 rounded border border-gray-200">
+            {contextHolder}
             <h4 className="font-medium text-xl">Bina Güncelleme Ekranı</h4>
             <p className="text-gray-600 mt-6">Bu alan sadece Adminlere açıktır!.</p>
             <form onSubmit={handleSubmit}>
@@ -42,7 +52,7 @@ export default function CreateStructureForm(props: any) {
                     </div>
                 </div>
                 <div className="space-x-4 mt-8">
-                    <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
+                    <Button onClick={success} htmlType="submit">Success</Button>
                 </div>
             </form>
         </div>
