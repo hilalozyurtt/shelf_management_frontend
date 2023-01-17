@@ -1,14 +1,17 @@
 import Link from "next/link";
 import React from 'react';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import Image from 'next/image'
+import { AreaChartOutlined, BankOutlined, ExperimentOutlined, InboxOutlined, LogoutOutlined, SettingOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
+import Router from "next/router";
 const { Header, Content, Footer, Sider } = Layout;
 
 const App: React.FC = (props: any) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
+  const menuName = ["Kullanıcılar", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Ayarlar", "Sistem Logları", "Kullanıcı Çıkışı"]
+  const urls = ["/user", "/product", "/shelf", "/structure", "/settings", "/system_logs", "/logout"]
   return (
     <Layout className=" min-h-screen h-fit">
       <Sider
@@ -21,16 +24,20 @@ const App: React.FC = (props: any) => {
           console.log(collapsed, type);
         }}
       >
-        <div className="logo" />
+        <div className="logo text-white max-h-20 mx-auto"><Image src={"/logo.png"} height={50} width={150} alt={""} style={{maxHeight:"120px", paddingBottom:"10px"}} /></div>
         <Menu
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['4']}
-          items={[UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
+          items={[UserOutlined, ExperimentOutlined, InboxOutlined, BankOutlined, SettingOutlined, AreaChartOutlined, LogoutOutlined].map(
             (icon, index) => ({
               key: String(index + 1),
               icon: React.createElement(icon),
-              label: `nav ${index + 1}`,
+              label: `${menuName[index]}`,
+              onClick: ()=>{
+                Router.push(urls[index])
+              }
+              
             }),
           )}
         />
