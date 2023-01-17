@@ -10,7 +10,7 @@ const App: React.FC = (props: any) => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout className=" min-h-screen h-fit">
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
@@ -39,7 +39,7 @@ const App: React.FC = (props: any) => {
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
-            {props.children}
+            { props.children }
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
