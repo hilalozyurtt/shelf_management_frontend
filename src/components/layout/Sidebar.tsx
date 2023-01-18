@@ -24,7 +24,7 @@ const App: React.FC = (props: any) => {
           console.log(collapsed, type);
         }}
       >
-        <div className="logo text-white max-h-20 mx-auto"><Image src={"/logo.png"} height={50} width={150} alt={""} style={{maxHeight:"120px", paddingBottom:"10px"}} /></div>
+        <div className="logo text-white max-h-20 mx-auto"><Image src={"/logo.png"} height={10} width={200} alt={""} style={{maxHeight:"120px", paddingBottom:"10px"}} /></div>
         <Menu
           theme="dark"
           mode="inline"
@@ -43,7 +43,9 @@ const App: React.FC = (props: any) => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        <Header style={{ padding: 0, background: colorBgContainer }}>
+          <h1 className="text-2xl font-bold " style={{ margin: '20px 24px 0' }} > RAF YERİ YÖNETİM SİSTEMİ </h1>
+        </Header>
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
             { props.children }

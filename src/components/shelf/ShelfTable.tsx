@@ -7,6 +7,9 @@ import react, { useState } from 'react'
 export default function ShelfTable(props:any) {
     const { data, loading, error } = useQuery(GET_ALL_SHELFS)
     const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
+    console.log("**************");
+    
+    console.log(data);
     
     if (loading) return <div>Loading</div>
     if (error) return <div>Error</div>
