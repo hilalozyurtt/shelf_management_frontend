@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef } from 'antd';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { InputRef, Tag } from 'antd';
 import { Button, Input, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
@@ -131,19 +131,15 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'AKTIF/PASIF',
-      dataIndex: 'active',
-      key: 'active',
-      width: '20%',
-      ...getColumnSearchProps('active'),
-    },
-    {
       title: 'EKLEME TARIHI',
       dataIndex: 'created_at',
       key: 'created_at',
       ...getColumnSearchProps('created_at'),
       sorter: (a, b) => a.created_at.length - b.created_at.length,
       sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{new Date(record.created_at).toLocaleString("tr-TR")}</span>
+      )
     },
     {
       title: 'SON GUNCELLEME TARIHI',
@@ -152,20 +148,23 @@ const App: React.FC = () => {
       ...getColumnSearchProps('updated_at'),
       sorter: (a, b) => a.updated_at.length - b.updated_at.length,
       sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
+      )
     },
     {
       title: 'ISLEM',
       key: 'islem',
       render: (_, record) => (
         <Space size="middle">
-          <Link href={{ pathname: "/structure/update_structure", query: { id: record._id } }}>Düzenle</Link>
+          <Link href={{ pathname: "/structure/update_structure", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={() => {
                     deleteStructure({
                       variables: {
                         input: { _id: record._id }
                       }, refetchQueries: [STRUCTURE_LIST]
                     })
-                  }}>Sil</button>
+                  }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),
     },
@@ -173,10 +172,10 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Space style={{ margin: 16 }}>
+      <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
       </Space>
-      <Table  columns={columns} dataSource={data?.getAllStructures} />
+      <Table columns={columns} dataSource={data?.getAllStructures} />
 
     </>
   );
