@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { InputRef, Tag } from 'antd';
 import { Button, Input, message, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
-import { STRUCTURE_LIST, DELETE_STRUCTURE } from '@/modules/resolvers/structureResolvers';
+import { GET_ALL_STRUCTURES, DELETE_STRUCTURE } from '@/modules/resolvers/structureResolvers';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 
@@ -29,11 +29,11 @@ const App: React.FC = () => {
   const success = () => {
     messageApi.open({
       type: 'success',
-      content: 'Ürün Silindi!',
+      content: 'Bina Silindi!',
     });
   };
 
-  const { data, loading:stLoading, error } = useQuery(STRUCTURE_LIST)
+  const { data, loading:stLoading, error } = useQuery(GET_ALL_STRUCTURES)
   const [deleteStructure, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_STRUCTURE)
 
 
@@ -70,14 +70,14 @@ const App: React.FC = () => {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Ara
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            Sıfırla
           </Button>
           <Button
             type="link"
@@ -88,7 +88,7 @@ const App: React.FC = () => {
               setSearchedColumn(dataIndex);
             }}
           >
-            Filter
+            Filtre
           </Button>
           <Button
             type="link"
@@ -97,7 +97,7 @@ const App: React.FC = () => {
               close();
             }}
           >
-            close
+            Kapat
           </Button>
         </Space>
       </div>
@@ -135,7 +135,7 @@ const App: React.FC = () => {
       key: 'bina_no',
       width: '30%',
       ...getColumnSearchProps('bina_no'),
-      sorter: (a, b) => a.bina_no.length - b.bina_no.length,
+      sorter: (a, b) => Number(a.bina_no) - Number(b.bina_no),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -170,7 +170,7 @@ const App: React.FC = () => {
                     await deleteStructure({
                       variables: {
                         input: { _id: record._id }
-                      }, refetchQueries: [STRUCTURE_LIST]
+                      }, refetchQueries: [GET_ALL_STRUCTURES]
                     })
                     success()
                   }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
@@ -185,7 +185,7 @@ const App: React.FC = () => {
       <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
       </Space>
-      <Table columns={columns} dataSource={data?.getAllStructures} />
+      <Table  columns={columns} dataSource={data?.getAllStructures} />
 
     </>
   );

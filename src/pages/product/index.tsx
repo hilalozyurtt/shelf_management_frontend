@@ -10,7 +10,6 @@ export default function Home() {
         Ürün Yönetimi
       </h1>
       <hr />
-      <Link href={"/product/create_product"}>Ürün Oluştur</Link>
       <ProductTable />
     </>
   )

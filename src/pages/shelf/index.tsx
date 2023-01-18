@@ -12,7 +12,6 @@ export default function Home() {
         Raf Yeri Yönetimi
       </h1>
       <hr />
-      <Link href={"shelf/create_shelf"}>Raf Oluştur</Link>
       <ShelfTable />
      
     </>

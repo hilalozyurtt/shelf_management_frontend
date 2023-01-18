@@ -1,8 +1,9 @@
 import React, {useState } from "react";
 import { useMutation, useQuery } from "@apollo/client"
 import { CREATE_SHELF } from "@/modules/resolvers/shelfResolvers";
-import { STRUCTURE_LIST } from "@/modules/resolvers/structureResolvers";
+import { GET_ALL_STRUCTURES } from "@/modules/resolvers/structureResolvers";
 import  Router  from "next/router";
+import Link from "next/link";
 
 
 type shelf = {
@@ -13,7 +14,7 @@ type shelf = {
 export default function CreateShelfForm(props: any) {
     const [inputs, setInputs] = useState<shelf>({ raf_no: "", structure_id: "" })
     const [createShelf, { data, loading, error }] = useMutation(CREATE_SHELF)
-    const { data:stData, loading:stLoading, error:stError } = useQuery(STRUCTURE_LIST)
+    const { data:stData, loading:stLoading, error:stError } = useQuery(GET_ALL_STRUCTURES)
 
 
     const handleChange = (event:any) => {
@@ -56,6 +57,7 @@ export default function CreateShelfForm(props: any) {
                 </div>
                 <div className="space-x-4 mt-8">
                     <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
+                    <Link href={"/shelf"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Vazgeç</Link>
                 </div>
             </form>
         </div>

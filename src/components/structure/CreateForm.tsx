@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client"
 import { CREATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
 import { Button, message, Space } from 'antd';
 import Router from "next/router";
+import Link from "next/link";
 
 
 type structure = {
@@ -53,7 +54,8 @@ export default function CreateStructureForm(props: any) {
                     </div>
                 </div>
                 <div className="space-x-4 mt-8">
-                    <Button onClick={success} htmlType="submit">Success</Button>
+                    <Button onClick={success} htmlType="submit">Kaydet</Button>
+                    <Link href={"/structure"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Vazgeç</Link>
                 </div>
             </form>
         </div>

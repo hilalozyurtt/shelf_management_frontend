@@ -1,61 +1,210 @@
-import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers'
-import { useMutation, useQuery } from '@apollo/client'
-import Link from 'next/link'
-import react, { useState } from 'react'
+import React, { useRef, useState } from 'react';
+import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { InputRef, Tag } from 'antd';
+import { Button, Input, message, Space, Table } from 'antd';
+import type { ColumnsType, ColumnType } from 'antd/es/table';
+import type { FilterConfirmProps } from 'antd/es/table/interface';
+import Highlighter from 'react-highlight-words';
+import { useMutation, useQuery } from '@apollo/client';
+import Link from 'next/link';
+import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
+import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
+
+interface DataType {
+  _id: string;
+  raf_no: string;
+  structure_id: string;
+  activate: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+type DataIndex = keyof DataType;
 
 
-export default function ShelfTable(props:any) {
-    const { data, loading, error } = useQuery(GET_ALL_SHELFS)
-    const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
-    console.log("**************");
-    
-    console.log(data);
-    
-    if (loading) return <div>Loading</div>
-    if (error) return <div>Error</div>
-    return(
-        <>
-        <div className="relative overflow-x-auto mt-5">
-        <table className="w-11/12 text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">Raf Numarası</th>
-              <th scope="col" className="px-6 py-3">Bina Numarası</th>
-              <th scope="col" className="px-6 py-3">Eklenme Tarihi</th>
-              <th scope="col" className="px-6 py-3">Son Güncellenme Tarihi</th>
-              <th scope="col" className="px-6 py-3">İşlem</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.getAllShelfs.map((d: any) => {
-              return (<tr key={d._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td className="px-6 py-4">
-                  {d.raf_no}
-                </td>
-                <td className="px-6 py-4">
-                  {d.structure_id}
-                </td>
-                <td className="px-6 py-4">
-                  {new Date(d.created_at).toLocaleString("tr-TR")}
-                </td>
-                <td className="px-6 py-4">
-                  {new Date(d.updated_at).toLocaleString("tr-TR")}
-                </td>
-                <td className="px-6">
-                <Link className="text-green-500 hover:text-green-700" href={{ pathname: "/shelf/update_shelf", query: { id: d._id } }}>Düzenle</Link>
-                  <button className="text-red-500 hover:text-red-700" onClick={() => {
-                    deleteShelf({
+const App: React.FC = () => {
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef<InputRef>(null);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Raf Silindi!',
+    });
+  };
+
+  const { data, loading:shLoading, error } = useQuery(GET_ALL_SHELFS)
+  const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
+  const {data:stData,loading:stLoading, error: stError} = useQuery(GET_ALL_STRUCTURES)
+
+
+  const handleSearch = (
+    selectedKeys: string[],
+    confirm: (param?: FilterConfirmProps) => void,
+    dataIndex: DataIndex,
+  ) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button type="primary"
+            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Ara
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Sıfırla
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setSearchText((selectedKeys as string[])[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filtre
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            Kapat
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'RAF NUMARASI',
+      dataIndex: 'raf_no',
+      key: 'raf_no',
+      width: '30%',
+      ...getColumnSearchProps('raf_no'),
+      sorter: (a, b) => Number(a.raf_no) - Number(b.raf_no),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'BINA NUMARASI',
+      dataIndex: 'structure_id',
+      key: 'structure_id',
+      width: '20%',
+      ...getColumnSearchProps('structure_id'),
+      sorter: (a, b) => a.structure_id.length - b.raf_no.length,
+      sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{stData?.getAllStructures.find((s:any)=>s._id == record.structure_id )?.bina_no}</span>
+      )
+    },
+    {
+      title: 'EKLEME TARIHI',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      ...getColumnSearchProps('created_at'),
+      sorter: (a, b) => a.created_at.length - b.created_at.length,
+      sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
+      )
+    },
+    {
+      title: 'SON GUNCELLEME TARIHI',
+      dataIndex: 'updated_at',
+      key: 'updated_at',
+      ...getColumnSearchProps('updated_at'),
+      sorter: (a, b) => a.updated_at.length - b.updated_at.length,
+      sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
+      )
+    },
+    {
+      title: 'ISLEM',
+      key: 'islem',
+      render: (_, record) => (
+        <Space size="middle">
+          <Link href={{ pathname: "/shelf/update_shelf", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
+          <button onClick={async () => {
+                    await deleteShelf({
                       variables: {
-                        input: { _id: d._id }
+                        input: { _id: record._id }
                       }, refetchQueries: [GET_ALL_SHELFS]
                     })
-                  }}>Sil</button>
-                </td>
-              </tr>);
-            })}
-          </tbody>
-        </table>
-      </div>
-        </>
-    )
-}
+                    success()
+                  }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
+        </Space>
+      ),
+    },
+  ];
+
+  return (
+    <>
+    {contextHolder}
+      <Table  columns={columns} dataSource={data?.getAllShelfs} />
+      <Space style={{ margin: 24 }}>
+        <Button><Link href={"shelf/create_shelf"}>Raf Oluştur</Link></Button>
+      </Space>
+    </>
+  );
+  
+};
+
+export default App;

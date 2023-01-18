@@ -3,6 +3,7 @@ import { useMutation, gql, useQuery } from "@apollo/client"
 import { CREATE_PRODUCT } from "@/modules/resolvers/productResolvers";
 import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
 import Router from "next/router";
+import Link from "next/link";
 
 type product = {
     arac: string,
@@ -82,6 +83,7 @@ export default function CreateProductForm(props: any) {
                 </div>
                 <div className="space-x-4 mt-8">
                     <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
+                    <Link href={"/shelf"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Vazgeç</Link>
                 </div>
             </form>
         </div>
