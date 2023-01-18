@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { InputRef, Tag } from 'antd';
-import { Button, Input, Space, Table } from 'antd';
+import { Button, Input, message, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
@@ -24,6 +24,14 @@ const App: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Ürün Silindi!',
+    });
+  };
 
   const { data, loading:stLoading, error } = useQuery(STRUCTURE_LIST)
   const [deleteStructure, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_STRUCTURE)
@@ -158,12 +166,13 @@ const App: React.FC = () => {
       render: (_, record) => (
         <Space size="middle">
           <Link href={{ pathname: "/structure/update_structure", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
-          <button onClick={() => {
-                    deleteStructure({
+          <button onClick={async () => {
+                    await deleteStructure({
                       variables: {
                         input: { _id: record._id }
                       }, refetchQueries: [STRUCTURE_LIST]
                     })
+                    success()
                   }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),
@@ -172,6 +181,7 @@ const App: React.FC = () => {
 
   return (
     <>
+    {contextHolder}
       <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
       </Space>

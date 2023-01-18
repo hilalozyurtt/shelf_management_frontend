@@ -1,15 +1,46 @@
 import Link from "next/link";
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image'
 import { AreaChartOutlined, BankOutlined, ExperimentOutlined, InboxOutlined, LogoutOutlined, SettingOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import Router from "next/router";
+import AuthContext from "@/context/authContext";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { CHECK_TOKEN, LOGOUT } from "@/modules/resolvers/userResolvers";
+import { useRouter } from "next/navigation";
 const { Header, Content, Footer, Sider } = Layout;
 
+
+type User = {
+  _id:string,
+  username: string,
+  usersurname: string,
+  email: string,
+  phone: string,
+  role: string,
+  token: string
+}
+
 const App: React.FC = (props: any) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+
+  const {user} = useContext(AuthContext)
+  const context = useContext(AuthContext)
+  const [userState, setUserState] = useState<User>({_id:"",username:"",usersurname:"",email:"",phone:"",role:"",token:""})
+
+  const [logout,{data: lData, loading: lLoading, error: lError}] = useLazyQuery(LOGOUT, {fetchPolicy: "no-cache" })
+
+  const router = useRouter()
+  useEffect(()=>{
+    if(user){
+      setUserState(user)
+      console.log(user);
+      console.log("a", userState);
+      
+    }
+
+  },[user])
+
+  const { token: { colorBgContainer }, } = theme.useToken();
   const menuName = ["Kullanıcılar", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Ayarlar", "Sistem Logları", "Kullanıcı Çıkışı"]
   const urls = ["/user", "/product", "/shelf", "/structure", "/settings", "/system_logs", "/logout"]
   return (
@@ -28,7 +59,7 @@ const App: React.FC = (props: any) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['4']}
+          defaultSelectedKeys={['1']}
           items={[UserOutlined, ExperimentOutlined, InboxOutlined, BankOutlined, SettingOutlined, AreaChartOutlined, LogoutOutlined].map(
             (icon, index) => ({
               key: String(index + 1),
@@ -45,9 +76,15 @@ const App: React.FC = (props: any) => {
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
           <h1 className="text-2xl font-bold " style={{ margin: '20px 24px 0' }} > RAF YERİ YÖNETİM SİSTEMİ </h1>
+            
         </Header>
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
+          { userState?.username ?  <button onClick={async()=>{
+            await logout();
+            setUserState(()=> {return {_id:"",username:"",usersurname:"",email:"",phone:"",role:"",token:""}})
+          }}>Çıkış yap</button>: ""}
+            {userState?.username ? <span>{userState?.username}</span> : "nouser"}
             { props.children }
           </div>
         </Content>
