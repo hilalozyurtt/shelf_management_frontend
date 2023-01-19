@@ -34,13 +34,18 @@ const App: React.FC = () => {
 
   const handleChange = (event:any) => {
     console.log("-------------------");
-    const adana = event.target
+    const adana = event
     console.log(adana);
     
     const name = event.target.name
     const value = event.target.value
     setInputs(values => ({ ...values, [name]: value }))
   }
+
+  const onChange = (value: string) => {
+    console.log(`selected ${value}`);
+    setInputs(values => ({ ...values, ["shelf_id"]: value }))
+  };
 
   const handleSubmit = async (e: any) => {
     await createStructure({
@@ -70,28 +75,28 @@ const App: React.FC = () => {
 
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
-      <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!'}]}>
+      <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+      <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="arac" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+      <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="ozellik" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+      <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="ozellik2" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+      <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="oem_no" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="orjinal_no" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
-        <Select placeholder="Raf numarası seçiniz." onChange={handleChange}  allowClear >
+      <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Select placeholder="Raf numarası seçiniz." onChange={onChange}  allowClear >
         {stData?.getAllShelfs.map((s:any)=>{
-            return <option onChange={handleChange} key={s._id} value={s._id}>{s.raf_no} </option>
+            return <option key={s._id} value={s._id}>{s.raf_no} </option>
         })}
         </Select>
       </Form.Item>
