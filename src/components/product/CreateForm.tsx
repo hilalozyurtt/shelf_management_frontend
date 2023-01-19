@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, gql, useQuery } from "@apollo/client"
-import { CREATE_PRODUCT } from "@/modules/resolvers/productResolvers";
-import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
+import React, { useState } from 'react';
+import { Button, Form, Input, Select } from 'antd';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
+import { CREATE_PRODUCT } from '@/modules/resolvers/productResolvers';
 import Router from "next/router";
-import Link from "next/link";
+
+const { Option } = Select;
+
+const layout = {
+  labelCol: { span: 0 },
+  wrapperCol: { span: 8 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 2, span: 16 },
+};
 
 type product = {
     arac: string,
@@ -15,77 +25,90 @@ type product = {
     shelf_id: string
 }
 
-export default function CreateProductForm(props: any) {
-    const [inputs, setInputs] = useState<product>({arac:"",name:"",oem_no:"",orjinal_no:"",ozellik:"",ozellik2:"",shelf_id:""})
-    const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
-    const [createStructure, { data, loading, error }] = useMutation(CREATE_PRODUCT)
+const App: React.FC = () => {
+  const [form] = Form.useForm();
 
-    const handleChange = (event:any) => {
-        const name = event.target.name
-        const value = event.target.value
-        setInputs(values => ({ ...values, [name]: value }))
-    }
+  const [inputs, setInputs] = useState<product>({arac:"",name:"",oem_no:"",orjinal_no:"",ozellik:"",ozellik2:"",shelf_id:""})
+  const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
+  const [createStructure, { data, loading, error }] = useMutation(CREATE_PRODUCT)
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        await createStructure({
-            variables: {
-                input: {
-                    arac: inputs.arac,
-                    name: inputs.name,
-                    oem_no: inputs.oem_no,
-                    orjinal_no: inputs.orjinal_no,
-                    ozellik: inputs.ozellik,
-                    ozellik2: inputs.ozellik2,
-                    shelf_id: inputs.shelf_id
-                }
+  const handleChange = (event:any) => {
+    console.log("-------------------");
+    const adana = event.target
+    console.log(adana);
+    
+    const name = event.target.name
+    const value = event.target.value
+    setInputs(values => ({ ...values, [name]: value }))
+  }
+
+  const handleSubmit = async (e: any) => {
+    await createStructure({
+        variables: {
+            input: {
+                arac: inputs.arac,
+                name: inputs.name,
+                oem_no: inputs.oem_no,
+                orjinal_no: inputs.orjinal_no,
+                ozellik: inputs.ozellik,
+                ozellik2: inputs.ozellik2,
+                shelf_id: inputs.shelf_id
             }
-        })
-        Router.push("/product")
-    }
+        }
+    })
+    Router.push("/product")
+  }
 
-    const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-    if(stLoading) return <div>Loading</div>
-    if(stError) return <div>error</div>
-    return (
-        <div className="p-8 rounded border border-gray-200">
-            <h4 className="font-medium text-xl">Ürün Oluşturma</h4>
-            <p className="text-gray-600 mt-6">Bu alan sadece Adminlere açıktır!.</p>
-            <form onSubmit={handleSubmit}>
-                <div className="mt-8 grid lg:grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor="name" className="text-sm text-gray-700 block mb-1 font-medium">İsim</label>
-                        <input type="text" name="name" id="name" className={className} onChange={handleChange} />
+  const onFinish = (values: any) => {
+    console.log(values);
+  };
 
-                        <label htmlFor="arac" className="text-sm text-gray-700 block mb-1 font-medium">Araç</label>
-                        <input type="text" name="arac" id="arac" className={className} onChange={handleChange} />
+  const onReset = () => {
+    form.resetFields();
+  };
 
-                        <label htmlFor="oem_no" className="text-sm text-gray-700 block mb-1 font-medium">oem numarası</label>
-                        <input type="text" name="oem_no" id="oem_no" className={className} onChange={handleChange} />
 
-                        <label htmlFor="orjinal_no" className="text-sm text-gray-700 block mb-1 font-medium">Orjinal Numarası</label>
-                        <input type="text" name="orjinal_no" id="orjinal_no" className={className} onChange={handleChange} />
+  return (
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+      <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!'}]}>
+        <Input name="name" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+        <Input name="arac" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+        <Input name="ozellik" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+        <Input name="ozellik2" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+        <Input name="oem_no" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="orjinal_no" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!' }]}>
+        <Select placeholder="Raf numarası seçiniz." onChange={handleChange}  allowClear >
+        {stData?.getAllShelfs.map((s:any)=>{
+            return <option onChange={handleChange} key={s._id} value={s._id}>{s.raf_no} </option>
+        })}
+        </Select>
+      </Form.Item>
+      <Form.Item {...tailLayout}>
+        <Button type="default" htmlType="submit">
+          Kaydet
+        </Button>
+        <Button htmlType="button" onClick={onReset}>
+          Sıfırla
+        </Button>
+        <Button type="default" htmlType="button" href='/product'>
+          Vazgeç
+        </Button>
+        
+      </Form.Item>
+    </Form>
+  );
+};
 
-                        <label htmlFor="ozellik" className="text-sm text-gray-700 block mb-1 font-medium">Özellik</label>
-                        <input type="text" name="ozellik" id="ozellik" className={className} onChange={handleChange} />
-
-                        <label htmlFor="ozellik2" className="text-sm text-gray-700 block mb-1 font-medium">Özellik 2</label>
-                        <input type="text" name="ozellik2" id="ozellik2" className={className} onChange={handleChange} />
-
-                        <label htmlFor="shelf_id" className="text-sm text-gray-700 block mb-1 font-medium">Raf Numarası</label>
-                        <select name="shelf_id" className={className} onChange={handleChange}>
-                            <option></option>
-                            {stData?.getAllShelfs.map((s:any)=>{
-                                return <option key={s._id} value={s._id}>{s.raf_no}</option>
-                            })}
-                        </select>
-                    </div>
-                </div>
-                <div className="space-x-4 mt-8">
-                    <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
-                    <Link href={"/shelf"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Vazgeç</Link>
-                </div>
-            </form>
-        </div>
-    );
-}
+export default App;

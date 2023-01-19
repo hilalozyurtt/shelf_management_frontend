@@ -139,8 +139,8 @@ const App: React.FC = () => {
       key: 'raf_no',
       width: '30%',
       ...getColumnSearchProps('raf_no'),
-      sorter: (a, b) => Number(a.raf_no) - Number(b.raf_no),
-      sortDirections: ['descend', 'ascend'],
+      //sorter: (a, b) => Number(a.raf_no) - Number(b.raf_no),
+      //sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'BINA NUMARASI',
@@ -148,8 +148,8 @@ const App: React.FC = () => {
       key: 'structure_id',
       width: '20%',
       ...getColumnSearchProps('structure_id'),
-      sorter: (a, b) => a.structure_id.length - b.raf_no.length,
-      sortDirections: ['descend', 'ascend'],
+      //sorter: (a, b) => a.structure_id.length - b.raf_no.length,
+      //sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{stData?.getAllStructures.find((s:any)=>s._id == record.structure_id )?.bina_no}</span>
       )

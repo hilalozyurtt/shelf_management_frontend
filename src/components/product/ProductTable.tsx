@@ -199,8 +199,8 @@ const App: React.FC = () => {
       key: 'shelf_id',
       width: '20%',
       ...getColumnSearchProps('shelf_id'),
-      sorter: (a, b) => a.shelf_id.length - b.shelf_id.length,
-      sortDirections: ['descend', 'ascend'],
+      //sorter: (a, b) => a.shelf_id.length - b.shelf_id.length,
+      //sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{shData?.getAllShelfs.find((s:any)=>s._id == record.shelf_id )?.raf_no}</span>
       )
@@ -210,7 +210,7 @@ const App: React.FC = () => {
       key: 'islem',
       render: (_, record) => (
         <Space size="middle">
-          <Link href={{ pathname: "/shelf/update_shelf", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
+          <Link href={{ pathname: "/product/update_product", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
                     await deleteProduct({
                       variables: {
@@ -228,9 +228,12 @@ const App: React.FC = () => {
     <>
     {contextHolder}
       <Table  columns={columns} dataSource={data?.getAllProducts} />
-      <Space style={{ margin: 24 }}>
-        <Button><Link href={"product/create_product"}>Ürün Oluştur</Link></Button>
+      <div className='justify-center'>
+      <Space style={{ margin: 24 , width:100, justifyContent: 'center'}} >
+        <div className='justify-center'><Button><Link href={"product/create_product"}>Ürün Oluştur</Link></Button></div>   
       </Space>
+      </div>
+
     </>
   );
   

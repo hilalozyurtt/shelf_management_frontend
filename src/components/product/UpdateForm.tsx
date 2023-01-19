@@ -15,8 +15,10 @@ type product = {
     shelf_id: string
 }
 export default function UpdateProductForm(props: any) {
+    console.log(props);
+    
     const [inputs, setInputs] = useState<product>({ _id: "", arac: "", name: "", oem_no: "", orjinal_no: "", ozellik: "", ozellik2: "", shelf_id: "" })
-    const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId.id } } })
+    const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId } } })
     const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
     const [updateProduct, { data, loading, error }] = useMutation(UPDATE_PRODUCT)
     const [messageApi, contextHolder] = message.useMessage();

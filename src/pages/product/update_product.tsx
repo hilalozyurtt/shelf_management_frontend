@@ -9,7 +9,7 @@ export default function UpdateProduct(props: any){
   }
   return(
     <>
-      <UpdateProductForm shelfId={id}/>
+      <UpdateProductForm productId={id}/>
     </>
   )
 }

@@ -40,12 +40,14 @@ const App: React.FC = (props: any) => {
 
   },[user])
 
+
   const { token: { colorBgContainer }, } = theme.useToken();
   const menuName = ["Kullanıcılar", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Ayarlar", "Sistem Logları", "Kullanıcı Çıkışı"]
   const urls = ["/user", "/product", "/shelf", "/structure", "/settings", "/system_logs", "/logout"]
   return (
-    <Layout className=" min-h-screen h-fit">
+    <Layout className=" min-h-screen h-fit ">
       <Sider
+        className="border-r-2"
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={(broken) => {
@@ -55,11 +57,11 @@ const App: React.FC = (props: any) => {
           console.log(collapsed, type);
         }}
       >
-        <div className="logo text-white max-h-20 mx-auto"><Image src={"/logo.png"} height={10} width={200} alt={""} style={{maxHeight:"120px", paddingBottom:"10px"}} /></div>
+        <div className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={10} width={300} alt={""} style={{maxHeight:"120px", paddingBottom:"10px"}} /></div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['']}
           items={[UserOutlined, ExperimentOutlined, InboxOutlined, BankOutlined, SettingOutlined, AreaChartOutlined, LogoutOutlined].map(
             (icon, index) => ({
               key: String(index + 1),
@@ -73,10 +75,10 @@ const App: React.FC = (props: any) => {
           )}
         />
       </Sider>
+      
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <h1 className="text-2xl font-bold " style={{ margin: '20px 24px 0' }} > RAF YERİ YÖNETİM SİSTEMİ </h1>
-            
+        <Header style={{ padding: 0, background: '#001221', }} className="border-b-2 border-amber-50">
+          <h1 className="text-2xl font-bold text-white" style={{ margin: '20px 24px 0' }} > RAF YERİ YÖNETİM SİSTEMİ </h1>
         </Header>
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>

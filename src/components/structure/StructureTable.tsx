@@ -135,8 +135,8 @@ const App: React.FC = () => {
       key: 'bina_no',
       width: '30%',
       ...getColumnSearchProps('bina_no'),
-      sorter: (a, b) => Number(a.bina_no) - Number(b.bina_no),
-      sortDirections: ['descend', 'ascend'],
+      //sorter: (a, b) => Number(a.bina_no) - Number(b.bina_no),
+      //sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'EKLEME TARIHI',
@@ -181,12 +181,11 @@ const App: React.FC = () => {
 
   return (
     <>
-    {contextHolder}
+  
+      <Table  columns={columns} dataSource={data?.getAllStructures} />
       <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
       </Space>
-      <Table  columns={columns} dataSource={data?.getAllStructures} />
-
     </>
   );
   
