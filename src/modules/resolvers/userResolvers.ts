@@ -9,7 +9,6 @@ query CheckToken {
     email
     phone
     role
-    token
   }
 }
 `

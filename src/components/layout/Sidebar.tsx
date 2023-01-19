@@ -17,28 +17,32 @@ type User = {
   usersurname: string,
   email: string,
   phone: string,
-  role: string,
-  token: string
+  role: string
 }
 
 const App: React.FC = (props: any) => {
 
   const {user} = useContext(AuthContext)
   const context = useContext(AuthContext)
-  const [userState, setUserState] = useState<User>({_id:"",username:"",usersurname:"",email:"",phone:"",role:"",token:""})
+  const [userState, setUserState] = useState<User>({_id:"",username:"",usersurname:"",email:"",phone:"",role:""})
 
   const [logout,{data: lData, loading: lLoading, error: lError}] = useLazyQuery(LOGOUT, {fetchPolicy: "no-cache" })
+  const [fetchUser, {data,loading, error}] = useLazyQuery(CHECK_TOKEN, {fetchPolicy:"no-cache"})
 
   const router = useRouter()
   useEffect(()=>{
     if(user){
       setUserState(user)
-      console.log(user);
-      console.log("a", userState);
-      
+    }else{
+      fetchUser()
     }
-
   },[user])
+
+  useEffect(()=>{
+    if(data?.checkToken){
+      context.login(data.checkToken)
+    }
+  }, [data])
 
 
   const { token: { colorBgContainer }, } = theme.useToken();
@@ -85,6 +89,7 @@ const App: React.FC = (props: any) => {
           { userState?.username ?  <button onClick={async()=>{
             await logout();
             setUserState(()=> {return {_id:"",username:"",usersurname:"",email:"",phone:"",role:"",token:""}})
+            router.refresh() //çıkış yaptığında logine göndericez şimdilik refresh etsin
           }}>Çıkış yap</button>: ""}
             {userState?.username ? <span>{userState?.username}</span> : "nouser"}
             { props.children }

@@ -1,4 +1,4 @@
-import StructureTable from "@/components/structure/StructureTable"
+import SystemLogTable from "@/components/system_log/SystemLogTable"
 import AuthContext from "@/context/authContext";
 import { useContext } from "react";
 export default function Home() {
@@ -6,9 +6,8 @@ export default function Home() {
   const context = useContext(AuthContext)
   return (
     <>
-      <StructureTable />
-            {/*@ts-ignore*/}
-            {user ? <span>{user?.username}</span> : "user giriş yapmamış"}
+      <SystemLogTable />
+
     </>
   )
 }
