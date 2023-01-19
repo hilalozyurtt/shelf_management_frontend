@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { CREATE_PRODUCT } from '@/modules/resolvers/productResolvers';
 import Router from "next/router";
+import Link from 'next/link';
 
 const { Option } = Select;
 
@@ -107,9 +108,10 @@ const App: React.FC = () => {
         <Button htmlType="button" onClick={onReset}>
           Sıfırla
         </Button>
-        <Button type="default" htmlType="button" href='/product'>
+        {/* Alttaki className'i almak için tarayıcıda inspect diyerek üsttkei kaydet ve sıfırla butonlarının üstüne geldim ve orda gözüken classlar (ç)aldım. bu sayede görüntü aynı oldu */}
+        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/product'}>
           Vazgeç
-        </Button>
+        </Link>
         
       </Form.Item>
     </Form>

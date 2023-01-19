@@ -2,6 +2,7 @@ import { GET_PRODUCT, UPDATE_PRODUCT } from "@/modules/resolvers/productResolver
 import { GET_ALL_SHELFS } from "@/modules/resolvers/shelfResolvers";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Button, message, Space } from 'antd';
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type product = {
@@ -15,8 +16,6 @@ type product = {
     shelf_id: string
 }
 export default function UpdateProductForm(props: any) {
-    console.log(props);
-    
     const [inputs, setInputs] = useState<product>({ _id: "", arac: "", name: "", oem_no: "", orjinal_no: "", ozellik: "", ozellik2: "", shelf_id: "" })
     const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId } } })
     const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
@@ -104,7 +103,7 @@ export default function UpdateProductForm(props: any) {
                 <Button type="primary" htmlType="submit" loading={loading}>
                     Güncelle
                 </Button>
-                    <button onClick={() => { props.setShowComp({ table: true, createForm: false, updateForm: false }) }} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50">Cancel</button>
+                    <Link href={"/product"}>Cancel</Link>
                 </div>
             </form>
         </div>
