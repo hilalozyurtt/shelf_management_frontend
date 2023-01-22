@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "Beyinsiz_avcisi",
+            "script": "./node_modules/next/dist/bin/next",
+            "env": {
+                "PORT": "3000"
+            }
+        }
+    ]
+}
