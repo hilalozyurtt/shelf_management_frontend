@@ -81,7 +81,7 @@ const App: React.FC = (props: any) => {
       </Sider>
       
       <Layout>
-        <Header style={{ padding: 0, background: '#001221', }} className="border-b-2 border-amber-50">
+        <Header style={{ padding: 0 }} className="bg-white dark:bg-slate-800 border-b-2 border-amber-50">
           <h1 className="text-2xl font-bold text-white" style={{ margin: '20px 24px 0' }} > RAF YERİ YÖNETİM SİSTEMİ </h1>
         </Header>
         <Content style={{ margin: '24px 16px 0' }}>

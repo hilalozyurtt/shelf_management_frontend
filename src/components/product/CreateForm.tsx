@@ -17,6 +17,7 @@ const tailLayout = {
 };
 
 type product = {
+    _id: string,
     arac: string,
     name: string,
     oem_no: string,
@@ -29,15 +30,11 @@ type product = {
 const App: React.FC = () => {
   const [form] = Form.useForm();
 
-  const [inputs, setInputs] = useState<product>({arac:"",name:"",oem_no:"",orjinal_no:"",ozellik:"",ozellik2:"",shelf_id:""})
+  const [inputs, setInputs] = useState<product>({_id:"",arac:"",name:"",oem_no:"",orjinal_no:"",ozellik:"",ozellik2:"",shelf_id:""})
   const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
   const [createStructure, { data, loading, error }] = useMutation(CREATE_PRODUCT)
 
   const handleChange = (event:any) => {
-    console.log("-------------------");
-    const adana = event
-    console.log(adana);
-    
     const name = event.target.name
     const value = event.target.value
     setInputs(values => ({ ...values, [name]: value }))
@@ -52,6 +49,7 @@ const App: React.FC = () => {
     await createStructure({
         variables: {
             input: {
+                _id: inputs._id,
                 arac: inputs.arac,
                 name: inputs.name,
                 oem_no: inputs.oem_no,
@@ -73,6 +71,8 @@ const App: React.FC = () => {
     form.resetFields();
   };
 
+  if(stLoading || loading) return <div>loading</div>
+  if (error || stError) return <div>Error</div>
 
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
