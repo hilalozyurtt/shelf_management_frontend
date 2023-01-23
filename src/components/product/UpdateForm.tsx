@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message, Select } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
-import { CREATE_PRODUCT, GET_PRODUCT, UPDATE_PRODUCT } from '@/modules/resolvers/productResolvers';
+import { GET_PRODUCT, UPDATE_PRODUCT } from '@/modules/resolvers/productResolvers';
 import Router from "next/router";
 import Link from 'next/link';
 
@@ -28,6 +28,8 @@ type product = {
 }
 
 const App: React.FC = (props: any) => {
+  console.log(props.productId);
+  
   const [form] = Form.useForm();
   const [inputs, setInputs] = useState<product>({ _id: "", arac: "", name: "", oem_no: "", orjinal_no: "", ozellik: "", ozellik2: "", shelf_id: "" })
   const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId } } })
@@ -54,7 +56,6 @@ const App: React.FC = (props: any) => {
   };
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
     updateProduct({
         variables: {
             input: {
@@ -73,16 +74,7 @@ const App: React.FC = (props: any) => {
   }
 
   useEffect(() => {
-    if (pData) {
-        console.log("222222222222222");
-        console.log(pData?.getProduct);
-        
-    }
     setInputs(pData?.getProduct)
-    console.log("************");
-    console.log(inputs);
-    
-    
   }, [pData])
 
   const onFinish = (values: any) => {
@@ -97,27 +89,27 @@ const App: React.FC = (props: any) => {
   if (error || stError || pError) return <div>Error</div>
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct}>
       <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Input name="name" onChange={handleChange} value={inputs?.name} />
+        <Input name="name" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="arac" onChange={handleChange} value={inputs?.arac}/>
+        <Input name="arac" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="ozellik" onChange={handleChange} value={inputs?.ozellik}/>
+        <Input name="ozellik" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="ozellik2" onChange={handleChange} value={inputs?.ozellik2}/>
+        <Input name="ozellik2" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Input name="oem_no" onChange={handleChange} value={inputs?.oem_no}/>
+        <Input name="oem_no" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Input name="orjinal_no" onChange={handleChange} value={inputs?.orjinal_no}/>
+        <Input name="orjinal_no" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Select placeholder="Raf numarası seçiniz." onChange={onChange}  allowClear value={inputs?.shelf_id}>
+        <Select placeholder="Raf numarası seçiniz." onChange={onChange}  allowClear>
         {stData?.getAllShelfs.map((s:any)=>{
             return <option key={s._id} value={s._id}>{s.raf_no} </option>
         })}

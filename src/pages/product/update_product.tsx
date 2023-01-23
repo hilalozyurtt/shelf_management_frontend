@@ -1,5 +1,6 @@
 import UpdateProductForm from "@/components/product/UpdateForm";
 import { useRouter } from 'next/router'
+import {useState} from 'react';
 
 export default function UpdateProduct(props: any){
   const router = useRouter()
@@ -9,7 +10,9 @@ export default function UpdateProduct(props: any){
   }
   return(
     <>
-      <UpdateProductForm productId={id}/>
+      {/*@ts-ignore*/}
+      { id ? <UpdateProductForm productId={id}/> : ""}
+      
     </>
   )
 }

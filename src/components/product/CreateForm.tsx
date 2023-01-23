@@ -49,7 +49,6 @@ const App: React.FC = () => {
     await createStructure({
         variables: {
             input: {
-                _id: inputs._id,
                 arac: inputs.arac,
                 name: inputs.name,
                 oem_no: inputs.oem_no,
