@@ -77,10 +77,6 @@ const App: React.FC = (props: any) => {
     setInputs(pData?.getProduct)
   }, [pData])
 
-  const onFinish = (values: any) => {
-    console.log(values);
-  };
-
   const onReset = () => {
     form.resetFields();
   };

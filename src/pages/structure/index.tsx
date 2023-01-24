@@ -6,6 +6,10 @@ export default function Home() {
   const context = useContext(AuthContext)
   return (
     <>
+      <h1 className="text-2xl font-bold ">
+        Bina Yönetimi
+      </h1>
+      <hr />
       <StructureTable />
             {/*@ts-ignore*/}
             {user ? <span>{user?.username}</span> : "user giriş yapmamış"}

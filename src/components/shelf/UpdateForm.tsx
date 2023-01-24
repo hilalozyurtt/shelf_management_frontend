@@ -1,8 +1,20 @@
-import { GET_SHELF, UPDATE_SHELF } from "@/modules/resolvers/shelfResolvers";
-import { GET_ALL_STRUCTURES } from "@/modules/resolvers/structureResolvers";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, message, Select } from 'antd';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_SHELF, UPDATE_SHELF } from '@/modules/resolvers/shelfResolvers';
+import Router from "next/router";
+import Link from 'next/link';
+import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
+
+const { Option } = Select;
+
+const layout = {
+  labelCol: { span: 0 },
+  wrapperCol: { span: 8 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 2, span: 16 },
+};
 
 type shelf = {
     _id: string,
@@ -10,67 +22,85 @@ type shelf = {
     structure_id: string,
 }
 
-export default function UpdateShelfForm(props: any) {
+const App: React.FC = (props: any) => {
+  console.log(props.shelfId);
+  
+  const [form] = Form.useForm();
+  const [inputs, setInputs] = useState<shelf>({ _id: "", raf_no: "", structure_id: "" })
+  const { data: shData, loading: shLoading, error: shError } = useQuery(GET_SHELF, { variables: { input: { _id: props.shelfId } } })
+  const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_STRUCTURES)
+  const [updateShelf, { data, loading, error }] = useMutation(UPDATE_SHELF)
+  const [messageApi, contextHolder] = message.useMessage()
 
-    const [inputs, setInputs] = useState<shelf>({_id: "", raf_no: "", structure_id: "" })
-    const { data: shData, loading: shLoading, error: shError } = useQuery(GET_SHELF, { variables: { input: { _id: props.shelfId } } })
-    const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_STRUCTURES)
-    const [updateShelf, { data, loading, error }] = useMutation(UPDATE_SHELF)
+  if(data){
+    messageApi.open({
+        type: 'success',
+        content: 'Güncelleme başarılı',
+      });
+  }
 
-    const handleChange = (event: any) => {
-        const name = event.target.name
-        const value = event.target.value
-        setInputs(values => ({ ...values, [name]: value }))
-    }
+  const handleChange = (event: any) => {
+    const name = event.target.name
+    const value = event.target.value
+    setInputs(values => ({ ...values, [name]: value }))
+  }
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        await updateShelf({
-            variables: {
-                input: {
-                    _id: inputs._id,
-                    raf_no: inputs.raf_no,
-                    structure_id: inputs.structure_id
-                }
+  const onChange = (value: string) => {
+    console.log(`selected ${value}`);
+    setInputs(values => ({ ...values, ["structure_id"]: value }))
+  };
+
+  const handleSubmit = (e: any) => {
+    updateShelf({
+        variables: {
+            input: {
+                _id: inputs._id,
+                raf_no: inputs.raf_no,
+                structure_id: inputs.structure_id
             }
-        })
-    }
+        }
+    })
+    Router.push("/shelf")
+  }
 
-    // bina her değiştiğinde değişen değeri al 
-    useEffect(() => {        
-        setInputs(shData?.getShelf)
-    }, [shData])
+  useEffect(() => {
+    setInputs(shData?.getShelf)
+  }, [shData])
 
-    const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-    if (loading || shLoading || stLoading) return <div>Loading</div>
-    if (error || shError || stError) return <div>Error</div>
-    return (
-        <div className="p-8 rounded border border-gray-200">
-            <h4 className="font-medium text-xl">Raf Yeri Güncelleme Ekranı</h4>
-            <p className="text-gray-600 mt-6">Bu alan sadece Adminlere açıktır!.</p>
-            <form onSubmit={handleSubmit}>
-                <div className="mt-8 grid lg:grid-cols-2 gap-4">
-                    <div>
-                        <input type="text" name="_id" id="_id" className="hidden" value={inputs?._id} onChange={handleChange} />
+  const onReset = () => {
+    form.resetFields();
+  };
 
-                        <label htmlFor="raf_no" className="text-sm text-gray-700 block mb-1 font-medium">Raf Numarası</label>
-                        <input type="text" name="raf_no" id="raf_no" className={className} value={inputs?.raf_no} onChange={handleChange} />
+  if(stLoading || loading || shLoading) return <div>loading</div>
+  if (error || stError || shError) return <div>Error</div>
 
-                        <label htmlFor="structure_id" className="text-sm text-gray-700 block mb-1 font-medium">Bina</label>
-                        <select name="structure_id" className={className} onChange={handleChange} value={inputs?.structure_id}>
-                            <option></option>
-                            {stData?.getAllStructures.map((s: any) => {
-                                return <option key={s._id} value={s._id}>{s.bina_no}</option>
-                            })}
-                        </select>
-                    </div>
-                </div>
+  return (
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getShelf}>
+      <Form.Item name="raf_no" label="Raf Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Input name="raf_no" onChange={handleChange} />
+      </Form.Item>
+      <Form.Item name="structure_id" label="Bina Numarası"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Select placeholder="Bina numarası seçiniz." onChange={onChange}  allowClear>
+        {stData?.getAllStructures.map((s:any)=>{
+            return <option key={s._id} value={s._id}>{s.bina_no} </option>
+        })}
+        </Select>
+      </Form.Item>
+      <Form.Item {...tailLayout}>
+        <Button type="default" htmlType="submit">
+          Güncelle
+        </Button>
+        <Button htmlType="button" onClick={onReset}>
+          Sıfırla
+        </Button>
+        {/* Alttaki className'i almak için tarayıcıda inspect diyerek üsttkei kaydet ve sıfırla butonlarının üstüne geldim ve orda gözüken classlar (ç)aldım. bu sayede görüntü aynı oldu */}
+        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/shelf'}>
+          Vazgeç
+        </Link>
+        
+      </Form.Item>
+    </Form>
+  );
+};
 
-                <div className="space-x-4 mt-8">
-                    <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Kaydet</button>
-                    <Link href={"/shelf"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Vazgeç</Link>
-                </div>
-            </form>
-        </div>
-    );
-}
+export default App;

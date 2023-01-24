@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { useRouter } from 'next/router';
 import AuthContext from '@/context/authContext';
 import { useMutation } from '@apollo/client';
@@ -44,8 +44,8 @@ const App: React.FC = () => {
   return (
     <Form
       name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
+      labelCol={{ span: 0 }}
+      wrapperCol={{ span: 8 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -66,8 +66,8 @@ const App: React.FC = () => {
         <Input name="password" onChange={onValuesChange} />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit" >Giriş</Button>
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="default" htmlType="submit" >Giriş</Button>
       </Form.Item>
     </Form>
   );

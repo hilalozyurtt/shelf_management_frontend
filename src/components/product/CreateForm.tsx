@@ -30,7 +30,7 @@ type product = {
 const App: React.FC = () => {
   const [form] = Form.useForm();
 
-  const [inputs, setInputs] = useState<product>({_id:"",arac:"",name:"",oem_no:"",orjinal_no:"",ozellik:"",ozellik2:"",shelf_id:""})
+  const [inputs, setInputs] = useState<product>({_id:"" ,arac:"", name:"", oem_no:"", orjinal_no:"", ozellik:"", ozellik2:"", shelf_id:""})
   const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
   const [createStructure, { data, loading, error }] = useMutation(CREATE_PRODUCT)
 
@@ -61,10 +61,6 @@ const App: React.FC = () => {
     })
     Router.push("/product")
   }
-
-  const onFinish = (values: any) => {
-    console.log(values);
-  };
 
   const onReset = () => {
     form.resetFields();

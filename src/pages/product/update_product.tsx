@@ -12,7 +12,6 @@ export default function UpdateProduct(props: any){
     <>
       {/*@ts-ignore*/}
       { id ? <UpdateProductForm productId={id}/> : ""}
-      
     </>
   )
 }

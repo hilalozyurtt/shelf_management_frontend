@@ -1,63 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { useMutation } from "@apollo/client"
-import { CREATE_STRUCTURE } from "@/modules/resolvers/structureResolvers";
-import { Button, message, Space } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Input, message, Select } from 'antd';
+import { useMutation } from '@apollo/client';
 import Router from "next/router";
-import Link from "next/link";
+import Link from 'next/link';
+import { CREATE_STRUCTURE } from '@/modules/resolvers/structureResolvers';
 
+const { Option } = Select;
+
+const layout = {
+  labelCol: { span: 0 },
+  wrapperCol: { span: 8 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 3, span: 16 },
+};
 
 type structure = {
     bina_no: string
 }
 
-export default function CreateStructureForm(props: any) {
-    const [messageApi, contextHolder] = message.useMessage();
+const App: React.FC = () => {
+  const [form] = Form.useForm();
 
-    const success = () => {
-    messageApi.open({
-        type: 'success',
-        content: 'This is a success message',
-    });
-    };
-    const [inputs, setInputs] = useState<structure>({ bina_no: "" })
-    const [createStructure, { data, loading, error }] = useMutation(CREATE_STRUCTURE)
+  const [inputs, setInputs] = useState<structure>({ bina_no: "" })
+  const [createStructure, { data, loading, error }] = useMutation(CREATE_STRUCTURE)
+  const [messageApi, contextHolder] = message.useMessage();
 
-    const handleChange = (event:any) => {
-        const name = event.target.name
-        const value = event.target.value
-        setInputs(values => ({ ...values, [name]: value }))
-    }
+  const handleChange = (event:any) => {
+    const name = event.target.name
+    const value = event.target.value
+    setInputs(values => ({ ...values, [name]: value }))
+  }
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        await createStructure({
-            variables: {
-                input: {
-                    bina_no: inputs.bina_no
-                }
+  const handleSubmit = async (e: any) => {
+    await createStructure({
+        variables: {
+            input: {
+                bina_no: inputs.bina_no
             }
-        })
-        Router.push("/structure")
-    }
+        }
+    })
+    Router.push("/structure")
+  }
 
-    const className = "bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-    return (
-        <div className="p-8 rounded border border-gray-200">
-            {contextHolder}
-            <h4 className="font-medium text-xl">Bina Güncelleme Ekranı</h4>
-            <p className="text-gray-600 mt-6">Bu alan sadece Adminlere açıktır!.</p>
-            <form onSubmit={handleSubmit}>
-                <div className="mt-8 grid lg:grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor="bina_no" className="text-sm text-gray-700 block mb-1 font-medium">Name</label>
-                        <input type="text" name="bina_no" id="bina_no" className={className} onChange={handleChange} />
-                    </div>
-                </div>
-                <div className="space-x-4 mt-8">
-                    <Button onClick={success} htmlType="submit">Kaydet</Button>
-                    <Link href={"/structure"} className="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50" >Vazgeç</Link>
-                </div>
-            </form>
-        </div>
-    );
-}
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  if(loading) return <div>loading</div>
+  if (error) return <div>Error</div>
+
+  return (
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+      <Form.Item name="bina_no" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Input name="bina_no" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item {...tailLayout}>
+        <Button type="default" htmlType="submit">
+          Kaydet
+        </Button>
+        <Button htmlType="button" onClick={onReset}>
+          Sıfırla
+        </Button>
+        {/* Alttaki className'i almak için tarayıcıda inspect diyerek üsttkei kaydet ve sıfırla butonlarının üstüne geldim ve orda gözüken classlar (ç)aldım. bu sayede görüntü aynı oldu */}
+        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/structure'}>
+          Vazgeç
+        </Link>
+        
+      </Form.Item>
+    </Form>
+  );
+};
+
+export default App;

@@ -39,7 +39,6 @@ const App: React.FC = () => {
   const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
   const {data:stData,loading:stLoading, error: stError} = useQuery(GET_ALL_STRUCTURES)
 
-
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -138,9 +137,9 @@ const App: React.FC = () => {
       dataIndex: 'raf_no',
       key: 'raf_no',
       width: '30%',
-      ...getColumnSearchProps('raf_no'),
-      //sorter: (a, b) => Number(a.raf_no) - Number(b.raf_no),
-      //sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('raf_no'), 
+      sorter: (a, b) =>  ((a.raf_no < b.raf_no) ? 1 : (a.raf_no > b.raf_no ? -1 : 0) ),
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'BINA NUMARASI',
@@ -148,8 +147,12 @@ const App: React.FC = () => {
       key: 'structure_id',
       width: '20%',
       ...getColumnSearchProps('structure_id'),
-      //sorter: (a, b) => a.structure_id.length - b.raf_no.length,
-      //sortDirections: ['descend', 'ascend'],
+      sorter: (a, b) =>{ 
+          const aStructure = stData?.getAllStructures.find((s:any) => s._id === a.structure_id)?.bina_no      
+          const bStructure = stData?.getAllStructures.find((s:any) => s._id === b.structure_id)?.bina_no
+        return ((aStructure < bStructure) ? 1 : (aStructure > bStructure ? -1 : 0) )
+      },
+      sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{stData?.getAllStructures.find((s:any)=>s._id == record.structure_id )?.bina_no}</span>
       )
@@ -159,7 +162,7 @@ const App: React.FC = () => {
       dataIndex: 'created_at',
       key: 'created_at',
       ...getColumnSearchProps('created_at'),
-      sorter: (a, b) => a.created_at.length - b.created_at.length,
+      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
@@ -170,7 +173,7 @@ const App: React.FC = () => {
       dataIndex: 'updated_at',
       key: 'updated_at',
       ...getColumnSearchProps('updated_at'),
-      sorter: (a, b) => a.updated_at.length - b.updated_at.length,
+      sorter: (a, b) => ((a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>

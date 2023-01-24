@@ -9,7 +9,8 @@ export default function UpdateShelf(props: any){
   }
   return(
     <>
-      <UpdateShelfForm shelfId={id}/>
+      {/*@ts-ignore*/}
+      { id ? <UpdateShelfForm shelfId={id}/> : ""}
     </>
   )
 }

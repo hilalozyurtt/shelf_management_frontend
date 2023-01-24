@@ -145,7 +145,7 @@ const App: React.FC = () => {
       key: 'name',
       width: '30%',
       ...getColumnSearchProps('name'),
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => ((a.name < b.name) ? 1 : (a.name > b.name ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -154,7 +154,7 @@ const App: React.FC = () => {
       key: 'arac',
       width: '20%',
       ...getColumnSearchProps('arac'),
-      sorter: (a, b) => a.arac.length - b.arac.length,
+      sorter: (a, b) => ((a.arac < b.arac) ? 1 : (a.arac > b.arac ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -163,7 +163,7 @@ const App: React.FC = () => {
       key: 'ozellik',
       width: '20%',
       ...getColumnSearchProps('ozellik'),
-      sorter: (a, b) => a.ozellik.length - b.ozellik.length,
+      sorter: (a, b) => ((a.ozellik < b.ozellik) ? 1 : (a.ozellik > b.ozellik ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -172,7 +172,7 @@ const App: React.FC = () => {
       key: 'ozellik2',
       width: '20%',
       ...getColumnSearchProps('ozellik2'),
-      sorter: (a, b) => a.ozellik2.length - b.ozellik2.length,
+      sorter: (a, b) => ((a.ozellik2 < b.ozellik2) ? 1 : (a.ozellik2 > b.ozellik2 ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -181,7 +181,7 @@ const App: React.FC = () => {
       key: 'oem_no',
       width: '20%',
       ...getColumnSearchProps('oem_no'),
-      sorter: (a, b) => Number(a.oem_no) - Number(b.oem_no),
+      sorter: (a, b) => ((a.oem_no < b.oem_no) ? 1 : (a.oem_no > b.oem_no ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -190,7 +190,7 @@ const App: React.FC = () => {
       key: 'orjinal_no',
       width: '20%',
       ...getColumnSearchProps('orjinal_no'),
-      sorter: (a, b) => Number(a.orjinal_no) - Number(b.orjinal_no),
+      sorter: (a, b) => ((a.orjinal_no < b.orjinal_no) ? 1 : (a.orjinal_no > b.orjinal_no ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -199,8 +199,12 @@ const App: React.FC = () => {
       key: 'shelf_id',
       width: '20%',
       ...getColumnSearchProps('shelf_id'),
-      //sorter: (a, b) => a.shelf_id.length - b.shelf_id.length,
-      //sortDirections: ['descend', 'ascend'],
+      sorter: (a, b) =>{ 
+        const aShelf = shData?.getAllShelfs.find((s:any) => s._id === a.shelf_id)?.raf_no      
+        const bShelf = shData?.getAllShelfs.find((s:any) => s._id === b.shelf_id)?.raf_no
+      return ((aShelf < bShelf) ? 1 : (aShelf > bShelf ? -1 : 0) )
+    },
+      sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{shData?.getAllShelfs.find((s:any)=>s._id == record.shelf_id )?.raf_no}</span>
       )

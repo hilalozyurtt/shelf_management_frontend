@@ -8,6 +8,7 @@ import Highlighter from 'react-highlight-words';
 import { GET_ALL_STRUCTURES, DELETE_STRUCTURE } from '@/modules/resolvers/structureResolvers';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
+import { isDate } from 'util/types';
 
 interface DataType {
   _id: string;
@@ -135,15 +136,15 @@ const App: React.FC = () => {
       key: 'bina_no',
       width: '30%',
       ...getColumnSearchProps('bina_no'),
-      //sorter: (a, b) => Number(a.bina_no) - Number(b.bina_no),
-      //sortDirections: ['descend', 'ascend'],
+      sorter: (a, b) => ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0) ),
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'EKLEME TARIHI',
       dataIndex: 'created_at',
       key: 'created_at',
       ...getColumnSearchProps('created_at'),
-      sorter: (a, b) => a.created_at.length - b.created_at.length,
+      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{new Date(record.created_at).toLocaleString("tr-TR")}</span>
@@ -154,7 +155,7 @@ const App: React.FC = () => {
       dataIndex: 'updated_at',
       key: 'updated_at',
       ...getColumnSearchProps('updated_at'),
-      sorter: (a, b) => a.updated_at.length - b.updated_at.length,
+      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>

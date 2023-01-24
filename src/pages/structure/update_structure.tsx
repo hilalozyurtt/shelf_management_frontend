@@ -9,7 +9,8 @@ export default function UpdateStructure(props: any){
   }
   return(
     <>
-      <UpdateStructureForm structureId={id}/>
+      {/*@ts-ignore*/}
+      { id ? <UpdateStructureForm structureId={id}/> : ""}
     </>
   )
 }
