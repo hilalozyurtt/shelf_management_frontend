@@ -46,7 +46,7 @@ const App: React.FC = (props: any) => {
 
 
   const { token: { colorBgContainer }, } = theme.useToken();
-  const menuName = ["Kullanıcılar", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Ayarlar", "Sistem Logları", "Kullanıcı Çıkışı"]
+  const menuName = ["Bilgilerim", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Ayarlar", "Sistem Logları", "Kullanıcı Çıkışı"]
   const urls = ["/user", "/product", "/shelf", "/structure", "/settings", "/system_logs", "/logout"]
   return (
     <Layout className=" min-h-screen h-fit ">
@@ -89,7 +89,7 @@ const App: React.FC = (props: any) => {
           { userState?.username ?  <button onClick={async()=>{
             await logout();
             setUserState(()=> {return {_id:"",username:"",usersurname:"",email:"",phone:"",role:"",token:""}})
-            router.refresh() //çıkış yaptığında logine göndericez şimdilik refresh etsin
+            router.push('/')
           }}>Çıkış yap</button>: ""}
             {userState?.username ? <span>{userState?.username}</span> : "nouser"}
             { props.children }
