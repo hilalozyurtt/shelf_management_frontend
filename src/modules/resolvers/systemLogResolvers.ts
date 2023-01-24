@@ -11,7 +11,6 @@ export const GET_ALL_SYSTEM_LOGS = gql`
       changed_id
       action
       created_at
-      updated_at
     }
   }
 `
