@@ -6,7 +6,6 @@ query CheckToken {
     _id
     username
     usersurname
-    email
     phone
     role
   }
@@ -25,7 +24,6 @@ query Query($userId: ID!) {
     _id
     username
     usersurname
-    email
     phone
     role
   }
@@ -37,7 +35,6 @@ mutation RegisterUser($input: RegisterInput) {
     _id
     username
     usersurname
-    email
     phone
     role
     password
@@ -52,7 +49,6 @@ mutation LoginUser($input: LoginInput) {
     _id
     username
     usersurname
-    email
     phone
     role
     password
