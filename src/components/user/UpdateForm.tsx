@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message, Select } from 'antd';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Router from "next/router";
 import Link from 'next/link';
+import { GET_USER, LOGOUT, UPDATE_ST_USER } from '@/modules/resolvers/userResolvers';
 
 const { Option } = Select;
 
@@ -18,22 +19,18 @@ type user = {
     _id: string,
     username: string,
     usersurname: string,
-    password: string,
-    orjinal_no: string,
-    ozellik: string,
-    ozellik2: string,
-    shelf_id: string
+    phone: string
 }
 
 const App: React.FC = (props: any) => {
   console.log(props.productId);
   
   const [form] = Form.useForm();
-  const [inputs, setInputs] = useState<user>({ _id: "", arac: "", name: "", oem_no: "", orjinal_no: "", ozellik: "", ozellik2: "", shelf_id: "" })
-  const { data: pData, loading: pLoading, error: pError } = useQuery(GET_PRODUCT, { variables: { input: { _id: props.productId } } })
-  const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
-  const [updateProduct, { data, loading, error }] = useMutation(UPDATE_PRODUCT)
+  const [inputs, setInputs] = useState<user>({ _id: "", username: "", usersurname: "", phone: ""})
+  const { data: pData, loading: pLoading, error: pError } = useQuery(GET_USER, { variables: { input: { _id: props.userId } } })
+  const [updateUser, { data, loading, error }] = useMutation(UPDATE_ST_USER)
   const [messageApi, contextHolder] = message.useMessage()
+  const [logout,{data: lData, loading: lLoading, error: lError}] = useLazyQuery(LOGOUT, {fetchPolicy: "no-cache" })
 
   if(data){
     messageApi.open({
@@ -53,61 +50,46 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, ["shelf_id"]: value }))
   };
 
-  const handleSubmit = (e: any) => {
-    updateProduct({
+  const handleSubmit = async (e: any) => {
+    await updateUser({
         variables: {
             input: {
                 _id: inputs._id,
-                arac: inputs.arac,
-                name: inputs.name,
-                oem_no: inputs.oem_no,
-                orjinal_no: inputs.orjinal_no,
-                ozellik: inputs.ozellik,
-                ozellik2: inputs.ozellik2,
-                shelf_id: inputs.shelf_id
+                username: inputs.username,
+                usersurname: inputs.usersurname,
+                phone: inputs.phone
+
             }
         }
     })
-    Router.push("/product")
+    logout()
+    Router.reload()
   }
 
   useEffect(() => {
-    setInputs(pData?.getProduct)
+    setInputs(pData?.user)
   }, [pData])
 
   const onReset = () => {
     form.resetFields();
   };
 
-  if(stLoading || loading || pLoading) return <div>loading</div>
-  if (error || stError || pError) return <div>Error</div>
+  if( loading || pLoading) return <div>loading</div>
+  if (error || pError) return <div>Error</div>
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct}>
-      <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Input name="name" onChange={handleChange} />
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.user}>
+      <Form.Item name="_id" label="İsim" className='hidden' rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Input name="_id" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="arac" onChange={handleChange} />
+      <Form.Item name="username" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="username" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="ozellik" onChange={handleChange} />
+      <Form.Item name="usersurname" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="usersurname" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="ozellik2" onChange={handleChange} />
-      </Form.Item>
-      <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Input name="oem_no" onChange={handleChange} />
-      </Form.Item>
-      <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Input name="orjinal_no" onChange={handleChange} />
-      </Form.Item>
-      <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Select placeholder="Raf numarası seçiniz." onChange={onChange}  allowClear>
-        {stData?.getAllShelfs.map((s:any)=>{
-            return <option key={s._id} value={s._id}>{s.raf_no} </option>
-        })}
-        </Select>
+      <Form.Item name="phone" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="phone" onChange={handleChange} />
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="default" htmlType="submit">

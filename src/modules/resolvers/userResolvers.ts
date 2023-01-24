@@ -1,5 +1,16 @@
 import { gql } from "@apollo/client";
 
+export const UPDATE_ST_USER = gql`
+mutation UpdateUser($input: UpdateStInput) {
+  updateUser(input: $input) {
+    _id
+    username
+    usersurname
+    phone
+  }
+}
+`
+
 export const CHECK_TOKEN = gql`
 query CheckToken {
   checkToken {
@@ -19,13 +30,12 @@ query Query {
 `
 
 export const GET_USER = gql`
-query Query($userId: ID!) {
-  user(id: $userId) {
+query User($input: getUserInput!) {
+  user(input: $input) {
     _id
     username
     usersurname
     phone
-    role
   }
 }
 `

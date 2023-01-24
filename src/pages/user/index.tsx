@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import AuthContext from "@/context/authContext";
 import { useRouter } from 'next/router';
+import { Button, Space } from 'antd';
 import Link from 'next/link';
 
 const App = () => {
@@ -17,7 +18,9 @@ const router = useRouter()
       <h1>Soy İsmi: {user?.usersurname}</h1>
       <h1>Telefon : {user?.phone}</h1>
       <h1>Yetki   : {user?.role}</h1>
-      <Link href={{pathname:"user/update_user", query:{id:user._id}}}>Güncelle</Link>
+      <Button><Link href={{pathname:"user/update_user", query:{id:user?._id}}}>Güncelle</Link></Button>
+      <br />
+      { user?.role == "admin" ? <Link className='' href={{pathname: "user/create_user"}}><Button>Yeni Kullanıcı Oluştur</Button></Link> : ""}
       </>
     );
   }
