@@ -3,7 +3,7 @@ import { Button, Form, Input, message, Select } from 'antd';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Router from "next/router";
 import Link from 'next/link';
-import { GET_USER, LOGOUT, UPDATE_ST_USER } from '@/modules/resolvers/userResolvers';
+import { GET_USER, LOGOUT, UPDATE_ST_USER_PASSWORD } from '@/modules/resolvers/userResolvers';
 
 const { Option } = Select;
 
@@ -17,16 +17,16 @@ const tailLayout = {
 
 type user = {
     _id: string,
-    username: string,
-    usersurname: string,
-    phone: string
+    password: string,
+    newpassword: string,
+    confirmPassword: string
 }
 
 const App: React.FC = (props: any) => {
   const [form] = Form.useForm();
-  const [inputs, setInputs] = useState<user>({ _id: "", username: "", usersurname: "", phone: ""})
+  const [inputs, setInputs] = useState<user>({ _id: "", password: "", newpassword: "", confirmPassword: ""})
   const { data: pData, loading: pLoading, error: pError } = useQuery(GET_USER, { variables: { input: { _id: props.userId } } })
-  const [updateUser, { data, loading, error }] = useMutation(UPDATE_ST_USER)
+  const [updateUser, { data, loading, error }] = useMutation(UPDATE_ST_USER_PASSWORD)
   const [messageApi, contextHolder] = message.useMessage()
   const [logout,{data: lData, loading: lLoading, error: lError}] = useLazyQuery(LOGOUT, {fetchPolicy: "no-cache" })
 
@@ -43,18 +43,14 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, [name]: value }))
   }
 
-  const onChange = (value: string) => {
-    setInputs(values => ({ ...values, ["shelf_id"]: value }))
-  };
-
   const handleSubmit = async (e: any) => {
     await updateUser({
         variables: {
             input: {
-                _id: inputs._id,
-                username: inputs.username,
-                usersurname: inputs.usersurname,
-                phone: inputs.phone
+                _id: props.userId,
+                password: inputs.password,
+                newpassword: inputs.newpassword,
+                confirmPassword: inputs.confirmPassword
 
             }
         }
@@ -75,18 +71,18 @@ const App: React.FC = (props: any) => {
   if (error || pError) return <div>Error</div>
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.user}>
-      <Form.Item name="_id" label="İsim" className='hidden' rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+      <Form.Item name="_id" label="_id" className='hidden' rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="_id" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="username" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="username" onChange={handleChange} />
+      <Form.Item name="password" label="Önceki Şifre" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="password" type='password' onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="usersurname" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="usersurname" onChange={handleChange} />
+      <Form.Item name="newpassword" label="Yeni Şifre" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="newpassword" type='password' onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="phone" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
-        <Input name="phone" onChange={handleChange} />
+      <Form.Item name="confirmPassword" label="Yeni Şifreyi Tekrar Girin" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+        <Input name="confirmPassword" type='password' onChange={handleChange} />
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="default" htmlType="submit">

@@ -23,7 +23,6 @@ type shelf = {
 }
 
 const App: React.FC = (props: any) => {
-  console.log(props.shelfId);
   
   const [form] = Form.useForm();
   const [inputs, setInputs] = useState<shelf>({ _id: "", raf_no: "", structure_id: "" })
@@ -46,7 +45,6 @@ const App: React.FC = (props: any) => {
   }
 
   const onChange = (value: string) => {
-    console.log(`selected ${value}`);
     setInputs(values => ({ ...values, ["structure_id"]: value }))
   };
 

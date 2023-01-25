@@ -10,6 +10,16 @@ mutation UpdateUser($input: UpdateStInput) {
   }
 }
 `
+export const UPDATE_ST_USER_PASSWORD = gql`
+mutation UpdatePasswordSt($input: UpdatePasswordStInput) {
+  updatePasswordSt(input: $input) {
+    _id
+    username
+    usersurname
+    phone
+  }
+}
+`
 
 export const CHECK_TOKEN = gql`
 query CheckToken {

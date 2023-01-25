@@ -1,4 +1,4 @@
-import UpdateUserForm from "@/components/user/UpdateForm";
+import UpdateUserPassForm from "@/components/user/UpdatePass";
 import { useRouter } from 'next/router'
 
 export default function UpdateUser(props: any) {
@@ -10,7 +10,7 @@ export default function UpdateUser(props: any) {
   return (
     <>
       {/*@ts-ignore*/}
-      {id ? <UpdateUserForm userId={id} /> : ""}
+      {id ? <UpdateUserPassForm userId={id} /> : ""}
     </>
   )
 }
