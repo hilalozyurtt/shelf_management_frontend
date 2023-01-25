@@ -10,6 +10,7 @@ export default function Home() {
 
   if(!user && router.isReady){
     router.push('/')
+    return(<></>)
   }else{
     return (
       <>

@@ -9,6 +9,7 @@ export default function CreateProduct(props: any){
   const context = useContext(AuthContext)
   if(!user && router.isReady){
     router.push('/')
+    return(<></>)
   }else{
     return(
       <>

@@ -13,6 +13,7 @@ export default function UpdateStructure(props: any) {
   }
   if (!user && router.isReady) {
     router.push('/')
+    return(<></>)
   } else {
     return (
       <>

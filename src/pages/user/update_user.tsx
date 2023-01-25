@@ -13,6 +13,7 @@ export default function UpdateUser(props: any){
   const context = useContext(AuthContext)
   if(!user && router.isReady){
     router.push('/')
+    return(<></>)
   }else{
     return(
       <>
