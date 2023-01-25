@@ -5,17 +5,10 @@ import { useRouter } from 'next/router';
 
 export default function CreteShelf(props: any){
   const router = useRouter()
-  const {user} = useContext(AuthContext)
-  const context = useContext(AuthContext)
-  if(!user && router.isReady){
-    router.push('/')
-    return(<></>)
-  }else {
-    return(
-      <>
-        <CreateShelfForm />
-      </>
-    )
-  }
-  
+
+  return(
+    <>
+      <CreateShelfForm />
+    </>
+  )
 }

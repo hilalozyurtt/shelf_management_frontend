@@ -5,16 +5,10 @@ import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter()
-  const {user} = useContext(AuthContext)
-  const context = useContext(AuthContext)
-  if(!user && router.isReady){
-    router.push('/')
-    return(<></>)
-  }else{
-    return (
-      <>
-        <SettingsScreen />
-      </>
-    )
-  }
+
+  return (
+    <>
+      <SettingsScreen />
+    </>
+  )
 }
