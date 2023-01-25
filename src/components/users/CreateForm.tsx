@@ -26,21 +26,17 @@ const App: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const [inputs, setInputs] = useState<user>({ username: "", usersurname: "", phone: "", role: "", password: "" })
   const [createUser, { data: dataCreate, loading: dataLoading, error: dataError }] = useMutation(REGISTER_USER)
-  const [messageApi, contextHolder] = message.useMessage()
 
-
-  if (dataCreate) {
-    messageApi.open({
-      type: 'success',
-      content: 'Güncelleme başarılı',
-    });
-  }
 
   const handleChange = (event: any) => {
     const name = event.target.name
     const value = event.target.value
     setInputs(values => ({ ...values, [name]: value }))
   }
+
+  const onChange = (value: string) => {
+    setInputs(values => ({ ...values, ["role"]: value }))
+  };
 
   const handleSubmit = async (e: any) => {
     await createUser({
@@ -54,7 +50,6 @@ const App: React.FC = (props: any) => {
         }
       }
     })
-
   }
 
   const onReset = () => {
@@ -65,21 +60,24 @@ const App: React.FC = (props: any) => {
   if (dataError) return <div>Error</div>
   return (
     <>
-      {contextHolder}
       <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
-        <Form.Item name="username" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
+        <Form.Item name="username" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Input name="username" onChange={handleChange} />
         </Form.Item>
-        <Form.Item name="usersurname" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
+        <Form.Item name="usersurname" label="Soy İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Input name="usersurname" onChange={handleChange} />
         </Form.Item>
-        <Form.Item name="phone" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
+        <Form.Item name="phone" label="Telefon" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Input name="phone" onChange={handleChange} />
         </Form.Item>
-        <Form.Item name="structure_id" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
-          <Select placeholder="Bina numarası seçiniz." onChange={handleChange} allowClear >
-            
+        <Form.Item name="role" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
+          <Select placeholder="Raf numarası seçiniz." onChange={onChange} allowClear >
+            <option key={"1"} value={"admin"}>Admin</option>
+            <option key={"2"} value={"user"}>Panel Kullanıcısı</option>
           </Select>
+        </Form.Item>
+        <Form.Item name="password" label="Şifre" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
+          <Input name="password" type='password' onChange={handleChange} />
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Button type="default" htmlType="submit">

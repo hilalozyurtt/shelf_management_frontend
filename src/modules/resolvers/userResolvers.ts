@@ -1,5 +1,17 @@
 import { gql } from "@apollo/client";
 
+export const GET_ALL_USERS = gql`
+query GetAllUsers {
+  getAllUsers {
+    _id
+    username
+    usersurname
+    phone
+    role
+  }
+}
+`
+
 export const UPDATE_ST_USER = gql`
 mutation UpdateUser($input: UpdateStInput) {
   updateUser(input: $input) {
