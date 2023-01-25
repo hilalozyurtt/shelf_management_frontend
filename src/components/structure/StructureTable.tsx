@@ -9,6 +9,7 @@ import { GET_ALL_STRUCTURES, DELETE_STRUCTURE } from '@/modules/resolvers/struct
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { isDate } from 'util/types';
+import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 
 interface DataType {
   _id: string;
@@ -34,7 +35,15 @@ const App: React.FC = () => {
     });
   };
 
+  const fault = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı silin.',
+    });
+  };
+
   const { data, loading:stLoading, error } = useQuery(GET_ALL_STRUCTURES)
+  const { data:shData, loading:shLoading, error:shError } = useQuery(GET_ALL_SHELFS)
   const [deleteStructure, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_STRUCTURE)
 
 
@@ -51,6 +60,12 @@ const App: React.FC = () => {
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
     setSearchText('');
+  };
+
+
+  const kontrol = (baglanti : any) => {
+    const baglantiVarMi = shData?.getAllShelfs.find((s:any) => s.structure_id === baglanti)
+    return (baglantiVarMi) ? true : false
   };
 
   const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
@@ -168,12 +183,20 @@ const App: React.FC = () => {
         <Space size="middle">
           <Link href={{ pathname: "/structure/update_structure", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
-                    await deleteStructure({
-                      variables: {
-                        input: { _id: record._id }
-                      }, refetchQueries: [GET_ALL_STRUCTURES]
-                    })
-                    success()
+                    const sonuc = kontrol(record._id)
+                    if (sonuc){
+                      console.log("faultagirdi");
+                      fault()
+                    }
+                    else{
+                      await deleteStructure({
+                        variables: {
+                          input: { _id: record._id }
+                        }, refetchQueries: [GET_ALL_STRUCTURES]
+                      })
+                      success()
+                    }
+                    
                   }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),
@@ -182,7 +205,7 @@ const App: React.FC = () => {
 
   return (
     <>
-  
+      {contextHolder}
       <Table  columns={columns} dataSource={data?.getAllStructures} />
       <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
