@@ -7,8 +7,7 @@ import type { FilterConfirmProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
-import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
-import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
+import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
 
 interface DataType {
@@ -231,6 +230,8 @@ const App: React.FC = () => {
   return (
     <>
     {contextHolder}
+      <div>Hızlı Arama Ekranı    
+      </div>
       <Table  columns={columns} dataSource={data?.getAllProducts} />
       <div className='justify-center'>
       <Space style={{ margin: 24 , width:100, justifyContent: 'center'}} >

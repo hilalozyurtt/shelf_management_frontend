@@ -1,23 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dropdown, MenuProps, Select, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { DownOutlined } from '@ant-design/icons';
+
+const [inputs, setInputs] = useState({key:"" ,secenek:""})
 
 interface DataType {
   key: string;
   aciklama: string;
 }
 
-const items: MenuProps['items'] = [
-    {
-        key: '1',
-        label: 'Evet',
-    },
-    {
-        key: '2',
-        label: 'Hayır',
-      },
-  ];
+const handleChange = (value: string) => {
+    console.log("blablablablablabla");   
+    console.log(`selected ${value}`);
+    setInputs(values => ({ ...values, ["secenek"]: value }))
+};
+
 
 const columns: ColumnsType<DataType> = [
   {
@@ -30,13 +28,16 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'secenek',
     render: (_, record) => (
         // Evet- hayırı nasıl taşısam düşünüyorum
-        <Dropdown menu={{ items }}>
-        <a onClick={(e) => e.preventDefault()}>
-          <Space>    
-            <DownOutlined />
-          </Space>
-        </a>
-      </Dropdown>
+        
+        <Select
+          defaultValue="true"
+          style={{ width: 120 }}
+          onChange={handleChange}
+          options={[
+            { value: 'true', label: 'Evet' },
+            { value: 'false', label: 'Hayır' },
+          ]}
+        />
       ),
   },
 ];

@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
+import { GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
 
 interface DataType {
   _id: string;
@@ -35,9 +36,23 @@ const App: React.FC = () => {
     });
   };
 
+  const fault = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Silinmek istenen raf ürünler tablosunda mevcut! Önce ürünler tablosundan bağlantıyı silin.',
+    });
+  };
+
   const { data, loading:shLoading, error } = useQuery(GET_ALL_SHELFS)
   const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
   const {data:stData,loading:stLoading, error: stError} = useQuery(GET_ALL_STRUCTURES)
+  const {data:pData,loading:pLoading, error: pError} = useQuery(GET_ALL_PRODUCTS)
+
+
+  const kontrol = (baglanti : any) => {
+    const baglantiVarMi = pData?.getAllProducts.find((s:any) => s.shelf_id === baglanti)
+    return (baglantiVarMi) ? true : false
+  };
 
   const handleSearch = (
     selectedKeys: string[],
@@ -186,13 +201,20 @@ const App: React.FC = () => {
         <Space size="middle">
           <Link href={{ pathname: "/shelf/update_shelf", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
-                    await deleteShelf({
-                      variables: {
-                        input: { _id: record._id }
-                      }, refetchQueries: [GET_ALL_SHELFS]
-                    })
-                    success()
-                  }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
+                    const sonuc = kontrol(record._id)
+                    if (sonuc){
+                      console.log("faultagirdi");
+                      fault()
+                    }
+                    else{
+                      await deleteShelf({
+                        variables: {
+                          input: { _id: record._id }
+                        }, refetchQueries: [GET_ALL_SHELFS]
+                      })
+                      success()
+                    }
+                }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),
     },
