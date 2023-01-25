@@ -14,9 +14,11 @@ const App = () => {
       <h1>Soy İsmi: {user?.usersurname}</h1>
       <h1>Telefon : {user?.phone}</h1>
       <h1>Yetki   : {user?.role}</h1>
-      <Button><Link href={{ pathname: "user/update_user", query: { id: user?._id } }}>Güncelle</Link></Button>
+      <Button><Link href={{ pathname: "user/update_user", query: { id: user?._id } }}>Bilgileri Güncelle</Link></Button>
+      <Button><Link href={{ pathname: "user/update_user", query: { id: user?._id } }}>Şifre Değiştir</Link></Button>
       <br />
       {user?.role == "admin" ? <Link className='' href={{ pathname: "user/create_user" }}><Button>Yeni Kullanıcı Oluştur</Button></Link> : ""}
+      <br />
     </>
   );
 
