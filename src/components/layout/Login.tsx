@@ -57,7 +57,7 @@ export default function Login() {
           label="Şifre"
           name="password"
           rules={[{ required: true, message: 'Lütfen şifrenizi giriniz!' }]}>
-          <Input name="password" onChange={onValuesChange} />
+          <Input name="password" type='password' onChange={onValuesChange} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
