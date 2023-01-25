@@ -12,7 +12,7 @@ import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productRes
 
 interface DataType {
   _id: string;
-  shelf_id: string;
+  raf_no: string;
   name: string;
   arac: string;
   ozellik: string;
@@ -40,10 +40,9 @@ const App: React.FC = () => {
     });
   };
 
-  const { data, loading:pLoading, error } = useQuery(GET_ALL_PRODUCTS)
-  const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT)
-  const {data:shData,loading:shLoading, error: shError} = useQuery(GET_ALL_SHELFS)
-
+  const { data, loading:pLoading, error } = useQuery(GET_ALL_PRODUCTS, {fetchPolicy:"no-cache"})
+  const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT,  {fetchPolicy:"no-cache"})
+  const {data:shData,loading:shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
 
   const handleSearch = (
     selectedKeys: string[],
@@ -194,19 +193,12 @@ const App: React.FC = () => {
     },
     {
       title: 'RAF NUMARASI',
-      dataIndex: 'shelf_id',
-      key: 'shelf_id',
+      dataIndex: 'raf_no',
+      key: 'raf_no',
       width: '20%',
-      ...getColumnSearchProps('shelf_id'),
-      sorter: (a, b) =>{ 
-        const aShelf = shData?.getAllShelfs.find((s:any) => s._id === a.shelf_id)?.raf_no      
-        const bShelf = shData?.getAllShelfs.find((s:any) => s._id === b.shelf_id)?.raf_no
-      return ((aShelf < bShelf) ? 1 : (aShelf > bShelf ? -1 : 0) )
-    },
+      ...getColumnSearchProps('raf_no'),
+      sorter: (a, b) => ((a.raf_no < b.raf_no) ? 1 : (a.raf_no > b.raf_no ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
-      render: (_ , record) => (
-        <span>{shData?.getAllShelfs.find((s:any)=>s._id == record.shelf_id )?.raf_no}</span>
-      )
     },
     {
       title: 'ISLEM',
@@ -226,7 +218,7 @@ const App: React.FC = () => {
       ),
     },
   ];
-
+  if(pLoading) return <div>loading</div>
   return (
     <>
     {contextHolder}

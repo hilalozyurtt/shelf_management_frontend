@@ -5,6 +5,7 @@ query GetAllProducts {
   getAllProducts {
     _id
     shelf_id
+    raf_no
     name
     arac
     ozellik
@@ -23,6 +24,7 @@ export const GET_PRODUCT = gql`
     getProduct(input: $input) {
             _id
             shelf_id
+            raf_no
             name
             arac
             ozellik
@@ -41,6 +43,7 @@ export const CREATE_PRODUCT = gql`
         createProduct(input: $input) {
             _id
             shelf_id
+            raf_no
             name
             arac
             ozellik
@@ -59,6 +62,7 @@ mutation DeleteProduct($input: deleteInput!) {
   deleteProduct(input: $input) {
     _id
     shelf_id
+    raf_no
     name
     arac
     ozellik
@@ -76,6 +80,7 @@ mutation UpdateProduct($input: updateProductInput!) {
   updateProduct(input: $input) {
     _id
     shelf_id
+    raf_no
     name
     arac
     ozellik

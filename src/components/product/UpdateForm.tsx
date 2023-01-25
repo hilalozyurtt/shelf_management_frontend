@@ -53,8 +53,8 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, ["shelf_id"]: value }))
   };
 
-  const handleSubmit = (e: any) => {
-    updateProduct({
+  const handleSubmit = async (e: any) => {
+    await updateProduct({
         variables: {
             input: {
                 _id: inputs._id,

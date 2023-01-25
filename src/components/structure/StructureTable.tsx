@@ -185,7 +185,6 @@ const App: React.FC = () => {
           <button onClick={async () => {
                     const sonuc =await kontrol(record._id)
                     if (sonuc){
-                      console.log("faultagirdi");
                       fault()
                     }
                     else{

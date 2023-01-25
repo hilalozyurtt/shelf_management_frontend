@@ -48,8 +48,8 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, ["structure_id"]: value }))
   };
 
-  const handleSubmit = (e: any) => {
-    updateShelf({
+  const handleSubmit = async (e: any) => {
+    await updateShelf({
         variables: {
             input: {
                 _id: inputs._id,

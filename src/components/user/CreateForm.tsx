@@ -78,9 +78,7 @@ const App: React.FC = (props: any) => {
         </Form.Item>
         <Form.Item name="structure_id" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Select placeholder="Bina numarası seçiniz." onChange={handleChange} allowClear >
-            {stData?.getAllStructures.map((s: any) => {
-              return <option key={s._id} value={s._id}>{s.bina_no} </option>
-            })}
+            
           </Select>
         </Form.Item>
         <Form.Item {...tailLayout}>

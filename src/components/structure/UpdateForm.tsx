@@ -44,8 +44,8 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, ["structure_id"]: value }))
   };
 
-  const handleSubmit = (e: any) => {
-    updateStructure({
+  const handleSubmit = async (e: any) => {
+    await updateStructure({
         variables: {
             input: {
                 _id: inputs._id,

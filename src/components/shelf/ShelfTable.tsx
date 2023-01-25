@@ -14,7 +14,7 @@ import { GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
 interface DataType {
   _id: string;
   raf_no: string;
-  structure_id: string;
+  bina_no: string;
   activate: boolean;
   created_at: string;
   updated_at: string;
@@ -49,7 +49,7 @@ const App: React.FC = () => {
   const {data:pData,loading:pLoading, error: pError} = useQuery(GET_ALL_PRODUCTS)
 
 
-  const kontrol = (baglanti : any) => {
+  const kontrol = async (baglanti : any) => {
     const baglantiVarMi = pData?.getAllProducts.find((s:any) => s.shelf_id === baglanti)
     return (baglantiVarMi) ? true : false
   };
@@ -157,20 +157,13 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'BINA NUMARASI',
-      dataIndex: 'structure_id',
-      key: 'structure_id',
-      width: '20%',
-      ...getColumnSearchProps('structure_id'),
-      sorter: (a, b) =>{ 
-          const aStructure = stData?.getAllStructures.find((s:any) => s._id === a.structure_id)?.bina_no      
-          const bStructure = stData?.getAllStructures.find((s:any) => s._id === b.structure_id)?.bina_no
-        return ((aStructure < bStructure) ? 1 : (aStructure > bStructure ? -1 : 0) )
-      },
+      title: 'BİNA NUMARASI',
+      dataIndex: 'bina_no',
+      key: 'bina_no',
+      width: '30%',
+      ...getColumnSearchProps('bina_no'), 
+      sorter: (a, b) =>  ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
-      render: (_ , record) => (
-        <span>{stData?.getAllStructures.find((s:any)=>s._id == record.structure_id )?.bina_no}</span>
-      )
     },
     {
       title: 'EKLEME TARIHI',
@@ -201,9 +194,8 @@ const App: React.FC = () => {
         <Space size="middle">
           <Link href={{ pathname: "/shelf/update_shelf", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
-                    const sonuc = kontrol(record._id)
+                    const sonuc = await kontrol(record._id)
                     if (sonuc){
-                      console.log("faultagirdi");
                       fault()
                     }
                     else{
@@ -219,7 +211,7 @@ const App: React.FC = () => {
       ),
     },
   ];
-
+  if(shLoading) return <div>Loading</div>
   return (
     <>
     {contextHolder}
