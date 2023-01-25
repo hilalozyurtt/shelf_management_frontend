@@ -23,8 +23,6 @@ type user = {
 }
 
 const App: React.FC = (props: any) => {
-  console.log(props.productId);
-  
   const [form] = Form.useForm();
   const [inputs, setInputs] = useState<user>({ _id: "", username: "", usersurname: "", phone: ""})
   const { data: pData, loading: pLoading, error: pError } = useQuery(GET_USER, { variables: { input: { _id: props.userId } } })
@@ -46,7 +44,6 @@ const App: React.FC = (props: any) => {
   }
 
   const onChange = (value: string) => {
-    console.log(`selected ${value}`);
     setInputs(values => ({ ...values, ["shelf_id"]: value }))
   };
 

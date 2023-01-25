@@ -36,7 +36,6 @@ const App: React.FC = () => {
   }
 
   const onChange = (value: string) => {
-    console.log(`selected ${value}`);
     setInputs(values => ({ ...values, ["structure_id"]: value }))
   };
 

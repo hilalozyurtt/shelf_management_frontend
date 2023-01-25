@@ -57,10 +57,10 @@ const App: React.FC = (props: any) => {
           breakpoint="lg"
           collapsedWidth="0"
           onBreakpoint={(broken) => {
-            console.log(broken);
+            
           }}
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+            
           }}
         >
           <div className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={10} width={300} alt={""} style={{ maxHeight: "120px", paddingBottom: "10px" }} /></div>
@@ -111,10 +111,10 @@ const App: React.FC = (props: any) => {
           breakpoint="lg"
           collapsedWidth="0"
           onBreakpoint={(broken) => {
-            console.log(broken);
+            
           }}
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+            
           }}
         >
           <div className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={10} width={300} alt={""} style={{ maxHeight: "120px", paddingBottom: "10px" }} /></div>
@@ -164,10 +164,10 @@ const App: React.FC = (props: any) => {
           breakpoint="lg"
           collapsedWidth="0"
           onBreakpoint={(broken) => {
-            console.log(broken);
+            
           }}
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+         
           }}
         >
           <div className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={10} width={300} alt={""} style={{ maxHeight: "120px", paddingBottom: "10px" }} /></div>

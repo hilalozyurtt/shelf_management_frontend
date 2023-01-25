@@ -12,7 +12,6 @@ export default function Login() {
   const [values, setInputs] = useState({ username: "", password: "" })
 
   const onFinish = (inputs: any) => {
-    console.log('Success:', inputs);
     loginUser()
   };
 
@@ -21,11 +20,7 @@ export default function Login() {
   };
 
   const onValuesChange = (e: any) => {
-    console.log("geldiii");
-    console.log(e.target);
-
     setInputs({ ...values, [e.target.name]: e.target.value })
-    console.log(values);
   }
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
@@ -54,7 +49,6 @@ export default function Login() {
         <Form.Item
           label="Kullanıcı Adı"
           name="username"
-          onMetaChange={onValuesChange}
           rules={[{ required: true, message: 'Lütfen kullanıcı adınızı giriniz!' }]}>
           <Input name="username" onChange={onValuesChange} />
         </Form.Item>
