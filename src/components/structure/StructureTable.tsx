@@ -63,7 +63,7 @@ const App: React.FC = () => {
   };
 
 
-  const kontrol = (baglanti : any) => {
+  const kontrol = async (baglanti : any) => {
     const baglantiVarMi = shData?.getAllShelfs.find((s:any) => s.structure_id === baglanti)
     return (baglantiVarMi) ? true : false
   };
@@ -183,7 +183,7 @@ const App: React.FC = () => {
         <Space size="middle">
           <Link href={{ pathname: "/structure/update_structure", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
-                    const sonuc = kontrol(record._id)
+                    const sonuc =await kontrol(record._id)
                     if (sonuc){
                       console.log("faultagirdi");
                       fault()
