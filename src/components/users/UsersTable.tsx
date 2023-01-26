@@ -35,6 +35,7 @@ const App: React.FC = () => {
   };
 
   const { data, loading, error } = useQuery(GET_ALL_USERS)
+  
 
   const handleSearch = (
     selectedKeys: string[],
@@ -148,7 +149,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Role',
+      title: 'Rol',
       dataIndex: 'role',
       key: 'role',
       width: '30%',

@@ -79,13 +79,13 @@ const App: React.FC = (props: any) => {
       <Form.Item name="_id" label="İsim" className='hidden' rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="_id" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="username" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="username" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="username" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="usersurname" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="usersurname" label="Soyad" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="usersurname" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="phone" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="phone" label="Tel.No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="phone" onChange={handleChange} />
       </Form.Item>
       <Form.Item {...tailLayout}>
@@ -96,7 +96,7 @@ const App: React.FC = (props: any) => {
           Sıfırla
         </Button>
         {/* Alttaki className'i almak için tarayıcıda inspect diyerek üsttkei kaydet ve sıfırla butonlarının üstüne geldim ve orda gözüken classlar (ç)aldım. bu sayede görüntü aynı oldu */}
-        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/product'}>
+        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/user'}>
           Vazgeç
         </Link>
         

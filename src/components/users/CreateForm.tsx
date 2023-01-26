@@ -70,8 +70,8 @@ const App: React.FC = (props: any) => {
         <Form.Item name="phone" label="Telefon" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Input name="phone" onChange={handleChange} />
         </Form.Item>
-        <Form.Item name="role" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
-          <Select placeholder="Raf numarası seçiniz." onChange={onChange} allowClear >
+        <Form.Item name="role" label="Rol" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
+          <Select placeholder="Lütfen bir rol seçiniz." onChange={onChange} allowClear >
             <option key={"1"} value={"admin"}>Admin</option>
             <option key={"2"} value={"user"}>Panel Kullanıcısı</option>
           </Select>
@@ -81,13 +81,13 @@ const App: React.FC = (props: any) => {
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Button type="default" htmlType="submit">
-            Güncelle
+            Kaydet
           </Button>
           <Button htmlType="button" onClick={onReset}>
             Sıfırla
           </Button>
           {/* Alttaki className'i almak için tarayıcıda inspect diyerek üsttkei kaydet ve sıfırla butonlarının üstüne geldim ve orda gözüken classlar (ç)aldım. bu sayede görüntü aynı oldu */}
-          <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/settings'}>
+          <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/users'}>
             Vazgeç
           </Link>
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import AuthContext from '@/context/authContext';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '@/modules/resolvers/userResolvers';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 export default function Login() {
   const router = useRouter();
@@ -38,7 +39,8 @@ export default function Login() {
   return (
     <>
       <Form
-        name="basic"
+        name="normal-login"
+        className="login-form"
         labelCol={{ span: 0 }}
         wrapperCol={{ span: 8 }}
         initialValues={{ remember: true }}
@@ -50,18 +52,18 @@ export default function Login() {
           label="Kullanıcı Adı"
           name="username"
           rules={[{ required: true, message: 'Lütfen kullanıcı adınızı giriniz!' }]}>
-          <Input name="username" onChange={onValuesChange} />
+          <Input name="username" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Kullanıcı Adı" onChange={onValuesChange} />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item 
           label="Şifre"
           name="password"
           rules={[{ required: true, message: 'Lütfen şifrenizi giriniz!' }]}>
-          <Input name="password" type='password' onChange={onValuesChange} />
+          <Input name="password" type='password' prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Şifre" onChange={onValuesChange} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="default" htmlType="submit" >Giriş</Button>
+          <Button type="default" htmlType="submit" className="login-form-button" >Giriş</Button>
         </Form.Item>
       </Form>
 

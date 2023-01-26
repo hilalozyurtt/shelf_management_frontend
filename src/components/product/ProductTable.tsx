@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
+import { GET_ALL_SYSTEM_PARAMS } from '@/modules/resolvers/systemParamsResolvers';
 
 interface DataType {
   _id: string;
@@ -43,6 +44,7 @@ const App: React.FC = () => {
   const { data, loading:pLoading, error } = useQuery(GET_ALL_PRODUCTS, {fetchPolicy:"no-cache"})
   const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT,  {fetchPolicy:"no-cache"})
   const {data:shData,loading:shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
+  const { data:spData, loading:spLoading, error:spError } = useQuery(GET_ALL_SYSTEM_PARAMS, {fetchPolicy:"no-cache"})
 
   const handleSearch = (
     selectedKeys: string[],
@@ -220,6 +222,7 @@ const App: React.FC = () => {
   ];
   if(pLoading) return <div>loading</div>
   return (
+    
     <>
     {contextHolder}
       <div>Hızlı Arama Ekranı    
