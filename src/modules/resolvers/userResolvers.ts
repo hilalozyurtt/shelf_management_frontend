@@ -88,3 +88,25 @@ mutation LoginUser($input: LoginInput) {
   }
 }
 `
+export const UPDATE_USER_PASSWORD_ADMIN = gql`
+mutation UpdatePasswordUserAD($input: updatePasswordUserADInput) {
+  updatePasswordUserAD(input: $input) {
+    _id
+    username
+  }
+}
+`
+
+export const DELETE_USER = gql`
+mutation DeleteUser($input: getUserInput) {
+  deleteUser(input: $input) {
+    _id
+    username
+    usersurname
+    phone
+    role
+    password
+    token
+  }
+}
+`

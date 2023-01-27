@@ -6,8 +6,8 @@ import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import Link from 'next/link';
-import { useQuery } from '@apollo/client';
-import { GET_ALL_USERS } from '@/modules/resolvers/userResolvers';
+import { useQuery, useMutation } from '@apollo/client';
+import { DELETE_USER, GET_ALL_USERS } from '@/modules/resolvers/userResolvers';
 
 
 interface DataType {
@@ -26,6 +26,8 @@ const App: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [messageApi, contextHolder] = message.useMessage();
+  const { data, loading, error } = useQuery(GET_ALL_USERS)
+  const [deleteUser, {data: dData, loading: dLoaing, error: dError}] = useMutation(DELETE_USER)
 
   const success = () => {
     messageApi.open({
@@ -34,8 +36,6 @@ const App: React.FC = () => {
     });
   };
 
-  const { data, loading, error } = useQuery(GET_ALL_USERS)
-  
 
   const handleSearch = (
     selectedKeys: string[],
@@ -162,10 +162,15 @@ const App: React.FC = () => {
       key: 'islem',
       render: (_, record) => (
         <Space size="middle">
-          <Link href={{ pathname: "", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
+          <Link href={{ pathname: "/users/update_user_password", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
+            await deleteUser({variables: { input: {
+              _id:record._id
+
+            }},refetchQueries:[GET_ALL_USERS]})
             success()
-          }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
+          }}>
+          <Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),
     },
