@@ -7,6 +7,7 @@ query GetAllSystemParams {
     _id
     key
     value
+    variable
     active
     created_at
     updated_at
@@ -20,6 +21,7 @@ query GetSystemParams($input: getSystemParamsInput) {
     _id
     key
     value
+    variable
     active
     created_at
     updated_at
@@ -33,6 +35,7 @@ mutation CreateSystemParams($input: createSystemParamsInput) {
     _id
     key
     value
+    variable
     active
     created_at
     updated_at
@@ -46,6 +49,7 @@ mutation UpdateSystemParams($input: updateSystemParamsInput) {
     _id
     key
     value
+    variable
     active
     created_at
     updated_at
@@ -59,6 +63,7 @@ mutation DeleteSystemParams($input: getSystemParamsInput) {
     _id
     key
     value
+    variable
     active
     created_at
     updated_at

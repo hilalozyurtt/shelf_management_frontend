@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Result, Select, Spin } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { CREATE_PRODUCT } from '@/modules/resolvers/productResolvers';
@@ -64,9 +64,20 @@ const App: React.FC = () => {
   const onReset = () => {
     form.resetFields();
   };
+  
+  if(stLoading || loading) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
 
-  if(stLoading || loading) return <div>loading</div>
-  if (error || stError) return <div>Error</div>
+  if(stError || error ) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
 
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
@@ -79,13 +90,13 @@ const App: React.FC = () => {
       <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="ozellik" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="ozellik2" label="Özellik 2">
         <Input name="ozellik2" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+      <Form.Item name="oem_no" label="OEM No" >
         <Input name="oem_no" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+      <Form.Item name="orjinal_no" label="Üretici No" >
         <Input name="orjinal_no" onChange={handleChange}/>
       </Form.Item>
       <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>

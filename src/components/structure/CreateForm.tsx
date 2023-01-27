@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Result, Select, Spin } from 'antd';
 import { useMutation } from '@apollo/client';
 import Router from "next/router";
 import Link from 'next/link';
@@ -47,8 +47,19 @@ const App: React.FC = () => {
     form.resetFields();
   };
 
-  if(loading) return <div>loading</div>
-  if (error) return <div>Error</div>
+  if(loading) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
+
+  if(error ) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
 
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
-import { InputRef, Tag } from 'antd';
+import { CloseOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { InputRef, Result, Spin, Tag } from 'antd';
 import { Button, Input, message, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
@@ -41,10 +41,10 @@ const App: React.FC = () => {
     });
   };
 
-  const { data, loading:pLoading, error } = useQuery(GET_ALL_PRODUCTS, {fetchPolicy:"no-cache"})
+  const { data, loading: pLoading, error } = useQuery(GET_ALL_PRODUCTS, {fetchPolicy:"no-cache"})
   const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT,  {fetchPolicy:"no-cache"})
-  const {data:shData,loading:shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
-  const { data:spData, loading:spLoading, error:spError } = useQuery(GET_ALL_SYSTEM_PARAMS, {fetchPolicy:"no-cache"})
+  const {data: shData,loading: shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
+  const { data: spData, loading: spLoading, error: spError } = useQuery(GET_ALL_SYSTEM_PARAMS, {fetchPolicy:"no-cache"})
 
   const handleSearch = (
     selectedKeys: string[],
@@ -73,7 +73,7 @@ const App: React.FC = () => {
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
-          <Button type="primary"
+          <Button type="default"
             onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
             icon={<SearchOutlined />}
             size="small"
@@ -92,21 +92,21 @@ const App: React.FC = () => {
             type="link"
             size="small"
             onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
+              clearFilters && handleReset(clearFilters)
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+              clearFilters && handleReset(clearFilters)
             }}
           >
-            Filtre
+            Filtreyi Kaldır
           </Button>
           <Button
-            type="link"
+            type="text"
             size="small"
             onClick={() => {
               close();
             }}
-          >
-            Kapat
+            icon= {<CloseOutlined />}
+          >   
           </Button>
         </Space>
       </div>
@@ -185,7 +185,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'ORJ NUMARASI',
+      title: 'ÜRETİCİ NUMARASI',
       dataIndex: 'orjinal_no',
       key: 'orjinal_no',
       width: '20%',
@@ -220,13 +220,25 @@ const App: React.FC = () => {
       ),
     },
   ];
-  if(pLoading) return <div>loading</div>
+  
+
+  if(pLoading || deleteLoading || shLoading || spLoading ) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
+
+  if(error || deleteError || shError || spError) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
+  
   return (
-    
     <>
     {contextHolder}
-      <div>Hızlı Arama Ekranı    
-      </div>
       <Table  columns={columns} dataSource={data?.getAllProducts} />
       <div className='justify-center'>
       <Space style={{ margin: 24 , width:100, justifyContent: 'center'}} >

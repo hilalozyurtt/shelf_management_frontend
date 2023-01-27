@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
-import { InputRef, Tag } from 'antd';
+import { CloseOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { InputRef, Result, Spin, Tag } from 'antd';
 import { Button, Input, message, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
 import { GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
+import modal from 'antd/es/modal';
 
 interface DataType {
   _id: string;
@@ -36,10 +37,10 @@ const App: React.FC = () => {
     });
   };
 
-  const fault = () => {
-    messageApi.open({
-      type: 'error',
-      content: 'Silinmek istenen raf ürünler tablosunda mevcut! Önce ürünler tablosundan bağlantıyı silin.',
+  const showModal = () => {
+    modal.error({
+      title: 'Bu raf dolu!',
+      content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı siliniz.',
     });
   };
 
@@ -47,7 +48,6 @@ const App: React.FC = () => {
   const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
   const {data:stData,loading:stLoading, error: stError} = useQuery(GET_ALL_STRUCTURES)
   const {data:pData,loading:pLoading, error: pError} = useQuery(GET_ALL_PRODUCTS)
-
 
   const kontrol = async (baglanti : any) => {
     const baglantiVarMi = pData?.getAllProducts.find((s:any) => s.shelf_id === baglanti)
@@ -81,7 +81,7 @@ const App: React.FC = () => {
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
-          <Button type="primary"
+          <Button type="default"
             onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
             icon={<SearchOutlined />}
             size="small"
@@ -100,21 +100,21 @@ const App: React.FC = () => {
             type="link"
             size="small"
             onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
+              clearFilters && handleReset(clearFilters)
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+              clearFilters && handleReset(clearFilters)
             }}
           >
-            Filtre
+            Filtreyi Kaldır
           </Button>
           <Button
-            type="link"
+            type="text"
             size="small"
             onClick={() => {
               close();
             }}
           >
-            Kapat
+            <CloseOutlined />
           </Button>
         </Space>
       </div>
@@ -196,7 +196,7 @@ const App: React.FC = () => {
           <button onClick={async () => {
                     const sonuc = await kontrol(record._id)
                     if (sonuc){
-                      fault()
+                      showModal()
                     }
                     else{
                       await deleteShelf({
@@ -211,7 +211,21 @@ const App: React.FC = () => {
       ),
     },
   ];
-  if(shLoading) return <div>Loading</div>
+
+  if(shLoading || deleteLoading || stLoading || pLoading) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
+
+  if(error || deleteError || stError || pError ) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
+
   return (
     <>
     {contextHolder}

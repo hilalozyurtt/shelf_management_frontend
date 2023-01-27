@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Result, Select, Spin } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_SHELF} from '@/modules/resolvers/shelfResolvers';
 import Router from "next/router";
@@ -54,9 +54,20 @@ const App: React.FC = () => {
   const onReset = () => {
     form.resetFields();
   };
+  
+  if(stLoading || loading) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
 
-  if(stLoading || loading) return <div>loading</div>
-  if (error || stError) return <div>Error</div>
+  if(stError || error) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
 
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>

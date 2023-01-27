@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import React, { useContext, useState } from 'react';
 import AuthContext from '@/context/authContext';
+import { Button, Result } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 
 export default function Home() {
   const { user } :any = useContext(AuthContext)
@@ -12,9 +14,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <span className='text-xl'>Hoş Geldin <span className='text-green-600'>{user?.username}</span>. İşlemlerine sol menüden devam edebilirsin.</span>
-      </main>
+      <Result
+        icon={<SmileOutlined />}
+        title= <span className='text-xl'>Hoş Geldin <span className='text-green-600'>{user?.username}</span>. İşlemlerine sol menüden devam edebilirsin.</span>
+      />
     </>
   )
 }

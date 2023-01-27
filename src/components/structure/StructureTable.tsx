@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
-import { InputRef, Tag } from 'antd';
+import { CloseOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { InputRef, Result, Spin, Tag } from 'antd';
 import { Button, Input, message, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
@@ -10,6 +10,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { isDate } from 'util/types';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
+import modal from 'antd/es/modal';
 
 interface DataType {
   _id: string;
@@ -38,14 +39,21 @@ const App: React.FC = () => {
   const fault = () => {
     messageApi.open({
       type: 'error',
-      content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı silin.',
+      duration: 10,
+      content: '',
+    });
+  };
+
+  const showModal = () => {
+    modal.error({
+      title: 'Bu raf dolu!',
+      content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı siliniz.',
     });
   };
 
   const { data, loading:stLoading, error } = useQuery(GET_ALL_STRUCTURES)
   const { data:shData, loading:shLoading, error:shError } = useQuery(GET_ALL_SHELFS)
   const [deleteStructure, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_STRUCTURE)
-
 
   const handleSearch = (
     selectedKeys: string[],
@@ -80,7 +88,7 @@ const App: React.FC = () => {
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
-          <Button type="primary"
+          <Button type="default"
             onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
             icon={<SearchOutlined />}
             size="small"
@@ -99,21 +107,21 @@ const App: React.FC = () => {
             type="link"
             size="small"
             onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
+              clearFilters && handleReset(clearFilters)
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+              clearFilters && handleReset(clearFilters)
             }}
           >
-            Filtre
+            Filtreyi Kaldır
           </Button>
           <Button
-            type="link"
+            type="text"
             size="small"
             onClick={() => {
               close();
             }}
           >
-            Kapat
+            <CloseOutlined />
           </Button>
         </Space>
       </div>
@@ -185,7 +193,7 @@ const App: React.FC = () => {
           <button onClick={async () => {
                     const sonuc =await kontrol(record._id)
                     if (sonuc){
-                      fault()
+                      showModal()
                     }
                     else{
                       await deleteStructure({
@@ -201,6 +209,20 @@ const App: React.FC = () => {
       ),
     },
   ];
+
+  if(stLoading || deleteLoading || shLoading ) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
+
+  if(error || deleteError || shError ) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Result, Select, Spin } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import Router from "next/router";
 import Link from 'next/link';
@@ -64,8 +64,19 @@ const App: React.FC = (props: any) => {
     form.resetFields();
   };
 
-  if(loading || shLoading) return <div>loading</div>
-  if (error || shError) return <div>Error</div>
+  if(loading|| shLoading ) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
+
+  if(error || shError ) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
 
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getStructure}>

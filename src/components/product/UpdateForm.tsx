@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Result, Select, Spin } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { GET_PRODUCT, UPDATE_PRODUCT } from '@/modules/resolvers/productResolvers';
@@ -79,18 +79,29 @@ const App: React.FC = (props: any) => {
     form.resetFields();
   };
 
-  if(stLoading || loading || pLoading) return <div>loading</div>
-  if (error || stError || pError) return <div>Error</div>
+  if(pLoading || stLoading || loading) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
+
+  if(pError || stError || error) return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Üzgünüz, bir hata oluştu."
+  />
+  )
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct}>
-      <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+    <Form {...layout}  form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct} >
+      <Form.Item name="name" label="İsim" labelAlign="right" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="arac" label="Araç" labelAlign="right" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="arac" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="ozellik" label="Özellik" labelAlign="right" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
         <Input name="ozellik" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="ozellik2" label="Özellik 2" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
@@ -99,7 +110,7 @@ const App: React.FC = (props: any) => {
       <Form.Item name="oem_no" label="OEM No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="oem_no" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="orjinal_no" label="Orj No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+      <Form.Item name="orjinal_no" label="Üretici No" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="orjinal_no" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
