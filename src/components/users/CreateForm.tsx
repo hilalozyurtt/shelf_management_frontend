@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Result, Select, Spin } from 'antd';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { REGISTER_USER } from '@/modules/resolvers/userResolvers';
+import { useRouter } from 'next/router';
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ type user = {
 }
 
 const App: React.FC = (props: any) => {
+  const router = useRouter();
   const [form] = Form.useForm();
   const [inputs, setInputs] = useState<user>({ username: "", usersurname: "", phone: "", role: "", password: "" })
   const [createUser, { data: dataCreate, loading: dataLoading, error: dataError }] = useMutation(REGISTER_USER)
@@ -50,16 +52,22 @@ const App: React.FC = (props: any) => {
         }
       }
     })
+
+    router.push("/users")
   }
 
   const onReset = () => {
     form.resetFields();
   };
 
-  if (dataLoading) return <div>loading</div>
-  if (dataError) return <div>Error</div>
+  if(dataLoading) return (
+    <Result
+      icon={<Spin size="large" />}
+    />
+  )
   return (
     <>
+    {dataError ? <div className='text-red-600'>Kullanıcı oluşturulamadı. Bu kullanıcı adı zaten kullanılıyor.</div> : ""}
       <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
         <Form.Item name="username" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Input name="username" onChange={handleChange} />

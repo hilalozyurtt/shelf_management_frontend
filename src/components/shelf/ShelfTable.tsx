@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
 import { GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
-import modal from 'antd/es/modal';
+import { Modal } from 'antd';
 
 interface DataType {
   _id: string;
@@ -38,7 +38,7 @@ const App: React.FC = () => {
   };
 
   const showModal = () => {
-    modal.error({
+    Modal.error({
       title: 'Bu raf dolu!',
       content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı siliniz.',
     });

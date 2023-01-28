@@ -29,6 +29,20 @@ query GetSystemParams($input: getSystemParamsInput) {
 }
 `
 
+export const GET_SYSTEM_PARAM_BY_VARIABLE = gql`
+query GetSystemParamsByValue($input: getSystemParamsByValueInput) {
+  getSystemParamsByValue(input: $input) {
+    _id
+    key
+    value
+    variable
+    active
+    created_at
+    updated_at
+  }
+}
+`
+
 export const  CREATE_SYSTEM_PARAMS = gql`
 mutation CreateSystemParams($input: createSystemParamsInput) {
   createSystemParams(input: $input) {

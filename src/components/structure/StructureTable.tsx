@@ -8,9 +8,8 @@ import Highlighter from 'react-highlight-words';
 import { GET_ALL_STRUCTURES, DELETE_STRUCTURE } from '@/modules/resolvers/structureResolvers';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
-import { isDate } from 'util/types';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
-import modal from 'antd/es/modal';
+import { Modal } from 'antd';
 
 interface DataType {
   _id: string;
@@ -45,7 +44,7 @@ const App: React.FC = () => {
   };
 
   const showModal = () => {
-    modal.error({
+    Modal.error({
       title: 'Bu raf dolu!',
       content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı siliniz.',
     });
@@ -162,7 +161,7 @@ const App: React.FC = () => {
       sorter: (a, b) => ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
-    {
+    { 
       title: 'EKLEME TARIHI',
       dataIndex: 'created_at',
       key: 'created_at',
@@ -209,25 +208,29 @@ const App: React.FC = () => {
       ),
     },
   ];
+  const newData = columns.filter((d: any) => {
+    return d.dataIndex != "updated_at"
+  })
+
 
   if(stLoading || deleteLoading || shLoading ) return (
-    <Result
-      icon={<Spin size="large" />}
-    />
+    <><Result
+    icon={<Spin size="large" />}
+  /></>
   )
 
   if(error || deleteError || shError ) return (
-    <Result
-      status="500"
-      title="500"
-      subTitle="Üzgünüz, bir hata oluştu."
-  />
+    <><Result
+    status="500"
+    title="500"
+    subTitle="Üzgünüz, bir hata oluştu."
+  /></>
   )
 
   return (
     <>
       {contextHolder}
-      <Table  columns={columns} dataSource={data?.getAllStructures} />
+      <Table  columns={newData} dataSource={data?.getAllStructures} />
       <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
       </Space>
