@@ -70,7 +70,7 @@ const App: React.FC = () => {
   )
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
       <Form.Item name="raf_no" label="Raf Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="raf_no" onChange={handleChange}/>
       </Form.Item>

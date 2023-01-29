@@ -32,7 +32,8 @@ export default function SiderComp(props: any) {
           onCollapse={(collapsed, type) => {
           }}
         >
-          <div className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={10} width={300} alt={""} style={{ maxHeight: "120px", paddingBottom: "10px" }} /></div>
+          <div  className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={100} width={300} alt={""} style={{ maxHeight: "190px", maxWidth: "160px", paddingBottom: "65px" , marginLeft: "20px"}} /></div>
+          <br />
           {props?.user ? <span className='text-md text-white pl-7'>Hoşgeldin <span className='text-green-600'>{props.user.username}</span></span> : ""}
           {props?.user ? <Menu
             theme="dark"

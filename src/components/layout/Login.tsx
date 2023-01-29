@@ -52,14 +52,14 @@ export default function Login() {
         autoComplete="off"
       >
         <Form.Item
-          label="Kullanıcı Adı"
+          //label="Kullanıcı Adı"
           name="username"
           rules={[{ required: true, message: 'Lütfen kullanıcı adınızı giriniz!' }]}>
           <Input name="username" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Kullanıcı Adı" onChange={onValuesChange} />
         </Form.Item>
 
         <Form.Item 
-          label="Şifre"
+          //label="Şifre"
           name="password"
           rules={[{ required: true, message: 'Lütfen şifrenizi giriniz!' }]}>
           <Input name="password" type='password' prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Şifre" onChange={onValuesChange} />

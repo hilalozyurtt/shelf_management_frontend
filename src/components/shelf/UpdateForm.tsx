@@ -86,7 +86,7 @@ const App: React.FC = (props: any) => {
 
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getShelf}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getShelf} layout= "vertical">
       <Form.Item name="raf_no" label="Raf Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="raf_no" onChange={handleChange} />
       </Form.Item>

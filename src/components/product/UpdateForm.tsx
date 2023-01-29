@@ -94,7 +94,7 @@ const App: React.FC = (props: any) => {
   )
 
   return (
-    <Form {...layout}  form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct} >
+    <Form {...layout}  form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct} layout= "vertical">
       <Form.Item name="name" label="İsim" labelAlign="right" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange} />
       </Form.Item>

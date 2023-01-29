@@ -18,7 +18,8 @@ const App = () => {
 
 
   return (
-    <Form {...layout} form={form} name="control-hooks" initialValues={user}>
+    <>
+    <Form {...layout} form={form} name="control-hooks" initialValues={user} layout= "vertical" >
       <Form.Item name="_id" label="İsim" className='hidden' >
         <Input name="_id" disabled/>
       </Form.Item>
@@ -40,6 +41,7 @@ const App = () => {
         {user?.role == "admin" ? <Link className='' href={{ pathname: "users" }}>Kullanıcılar Listesini Gör</Link> : ""}
       </Form.Item>
     </Form>
+    </>
   );
 
 };

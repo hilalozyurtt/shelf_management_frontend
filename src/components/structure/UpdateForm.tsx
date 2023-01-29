@@ -79,7 +79,7 @@ const App: React.FC = (props: any) => {
   )
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getStructure}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getStructure} layout= "vertical">
       <Form.Item name="bina_no" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="bina_no" onChange={handleChange} />
       </Form.Item>

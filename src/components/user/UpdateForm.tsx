@@ -75,7 +75,7 @@ const App: React.FC = (props: any) => {
   if (error || pError) return <div>Error</div>
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.user}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.user} layout= "vertical">
       <Form.Item name="_id" label="İsim" className='hidden' rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="_id" onChange={handleChange} />
       </Form.Item>

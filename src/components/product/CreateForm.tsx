@@ -78,9 +78,9 @@ const App: React.FC = () => {
       subTitle="Üzgünüz, bir hata oluştu."
   />
   )
-
+  
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
       <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange}/>
       </Form.Item>

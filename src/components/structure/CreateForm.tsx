@@ -62,7 +62,7 @@ const App: React.FC = () => {
   )
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
       <Form.Item name="bina_no" label="Bina Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="bina_no" onChange={handleChange}/>
       </Form.Item>

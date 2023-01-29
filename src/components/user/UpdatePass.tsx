@@ -74,7 +74,7 @@ const App: React.FC = (props: any) => {
   if (error || pError) return <div>Error</div>
 
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+    <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
       <Form.Item name="_id" label="_id" className='hidden' rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="_id" onChange={handleChange} />
       </Form.Item>
@@ -95,7 +95,7 @@ const App: React.FC = (props: any) => {
           Sıfırla
         </Button>
         {/* Alttaki className'i almak için tarayıcıda inspect diyerek üsttkei kaydet ve sıfırla butonlarının üstüne geldim ve orda gözüken classlar (ç)aldım. bu sayede görüntü aynı oldu */}
-        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/product'}>
+        <Link className='ant-btn css-dev-only-do-not-override-1i9hnpv ant-btn-default' href={'/user'}>
           Vazgeç
         </Link>
         

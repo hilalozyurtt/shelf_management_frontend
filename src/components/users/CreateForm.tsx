@@ -68,7 +68,7 @@ const App: React.FC = (props: any) => {
   return (
     <>
     {dataError ? <div className='text-red-600'>Kullanıcı oluşturulamadı. Bu kullanıcı adı zaten kullanılıyor.</div> : ""}
-      <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit}>
+      <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
         <Form.Item name="username" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace: true }]}>
           <Input name="username" onChange={handleChange} />
         </Form.Item>

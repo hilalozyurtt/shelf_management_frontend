@@ -156,15 +156,6 @@ const App: React.FC = () => {
         <span>{new Date(record.created_at).toLocaleString("tr-TR")}</span>
       )
     },
-    {
-      title: 'ISLEM',
-      key: 'islem',
-      render: (_, record) => (
-        <Space size="middle">
-          <Link href={{ pathname: "/structure/update_structure", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Detay Gör</Tag></Link>
-        </Space>
-      ),
-    },
   ];
 
   return (
