@@ -166,7 +166,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'EKLEME TARIHI',
+      title: 'EKLEME TARİHİ',
       dataIndex: 'created_at',
       key: 'created_at',
       ...getColumnSearchProps('created_at'),
@@ -177,7 +177,7 @@ const App: React.FC = () => {
       )
     },
     {
-      title: 'SON GUNCELLEME TARIHI',
+      title: 'GÜNCELLENME TARİHİ',
       dataIndex: 'updated_at',
       key: 'updated_at',
       ...getColumnSearchProps('updated_at'),
@@ -188,7 +188,7 @@ const App: React.FC = () => {
       )
     },
     {
-      title: 'ISLEM',
+      title: 'İŞLEM',
       key: 'islem',
       render: (_, record) => (
         <Space size="middle">

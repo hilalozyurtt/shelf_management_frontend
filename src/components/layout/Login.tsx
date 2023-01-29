@@ -13,6 +13,8 @@ export default function Login() {
   const [values, setInputs] = useState({ username: "", password: "" })
 
   const onFinish = (inputs: any) => {
+    console.log(values);
+    
     loginUser()
   };
 
@@ -24,7 +26,7 @@ export default function Login() {
     setInputs({ ...values, [e.target.name]: e.target.value })
   }
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
     update(proxy, { data: { loginUser: userData } }) {
       context.login(userData)
       router.push("/user")
@@ -38,6 +40,7 @@ export default function Login() {
   })
   return (
     <>
+    { error ? <div className='text-red-600'>Doğrulama başarısız oldu tekrar deneyin!</div> : ""}
       <Form
         name="normal-login"
         className="login-form"

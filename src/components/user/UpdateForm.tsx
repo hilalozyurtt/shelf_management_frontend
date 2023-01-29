@@ -59,7 +59,7 @@ const App: React.FC = (props: any) => {
             }
         }
     })
-    logout()
+    await logout()
     Router.reload()
   }
 

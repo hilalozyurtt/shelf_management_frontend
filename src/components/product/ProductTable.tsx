@@ -140,7 +140,7 @@ const App: React.FC = () => {
   
   const columns: ColumnsType<DataType> = [
     {
-      title: 'ISIM',
+      title: 'İSİM',
       dataIndex: 'name',
       key: 'name',
       width: '30%',
@@ -149,7 +149,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'ARAC',
+      title: 'ARAÇ',
       dataIndex: 'arac',
       key: 'arac',
       width: '20%',
@@ -158,7 +158,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'OZELLIK',
+      title: 'ÖZELLİK',
       dataIndex: 'ozellik',
       key: 'ozellik',
       width: '20%',
@@ -167,7 +167,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'OZELLIK 2',
+      title: 'ÖZELLİK 2',
       dataIndex: 'ozellik2',
       key: 'ozellik2',
       width: '20%',
@@ -203,7 +203,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'ISLEM',
+      title: 'İŞLEM',
       key: 'islem',
       render: (_, record) => (
         <Space size="middle">

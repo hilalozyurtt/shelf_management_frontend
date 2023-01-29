@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form, Input, message, Select } from 'antd';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from 'next/link';
 import { GET_USER, LOGOUT, UPDATE_ST_USER_PASSWORD } from '@/modules/resolvers/userResolvers';
+import AuthContext from '@/context/authContext';
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ type user = {
 }
 
 const App: React.FC = (props: any) => {
+  const context = useContext(AuthContext)
   const [form] = Form.useForm();
   const [inputs, setInputs] = useState<user>({ _id: "", password: "", newpassword: "", confirmPassword: ""})
   const { data: pData, loading: pLoading, error: pError } = useQuery(GET_USER, { variables: { input: { _id: props.userId } } })
@@ -43,6 +45,7 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, [name]: value }))
   }
 
+  const router = useRouter()
   const handleSubmit = async (e: any) => {
     await updateUser({
         variables: {
@@ -54,9 +57,9 @@ const App: React.FC = (props: any) => {
 
             }
         }
-    })
-    logout()
-    Router.reload()
+    })  
+    await logout()
+    router.reload()
   }
 
   useEffect(() => {
