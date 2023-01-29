@@ -39,7 +39,7 @@ export default function SiderComp(props: any) {
             theme="dark"
             mode="inline"
             defaultSelectedKeys={['']}
-            items={[UserOutlined, ExperimentOutlined, InboxOutlined, BankOutlined, SettingOutlined, AreaChartOutlined, LogoutOutlined].map(
+            items={[UserOutlined, ExperimentOutlined, InboxOutlined, BankOutlined, SettingOutlined, LogoutOutlined].map(
               (icon, index) => {
                 if (icon == LogoutOutlined) {
                   return {
