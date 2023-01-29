@@ -17,8 +17,8 @@ export default function SiderComp(props: any) {
   const context = useContext(AuthContext)
   const [logout, { data: lData, loading: lLoading, error: lError }] = useLazyQuery(LOGOUT, { fetchPolicy: "no-cache" })
   const { token: { colorBgContainer }, } = theme.useToken();
-  const menuName = ["Bilgilerim", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Ayarlar", "Sistem Logları", "Kullanıcı Çıkışı"]
-  const urls = ["/user", "/product", "/shelf", "/structure", "/settings", "/system_logs", "/logout"]
+  const menuName = ["Bilgilerim", "Ürün Yönetimi", "Raf Yönetimi", "Bina Yönetimi", "Sistem Logları", "Kullanıcı Çıkışı"]
+  const urls = ["/user", "/product", "/shelf", "/structure", "/system_logs", "/logout"]
 
   return (
     <>
