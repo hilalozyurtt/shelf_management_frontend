@@ -8,6 +8,7 @@ query GetAllSystemParams {
     key
     value
     variable
+    table
     active
     created_at
     updated_at
@@ -28,6 +29,13 @@ query GetSystemParams($input: getSystemParamsInput) {
   }
 }
 `
+export const GET_SYSTEM_PARAMS_BY_TABLE = gql`
+  query GetSystemParamsByTable($input: getSystemParamsByTableInput) {
+    getSystemParamsByTable(input: $input) {
+      variable
+    }
+  }
+`
 
 export const GET_SYSTEM_PARAM_BY_VARIABLE = gql`
 query GetSystemParamsByValue($input: getSystemParamsByValueInput) {
@@ -35,6 +43,7 @@ query GetSystemParamsByValue($input: getSystemParamsByValueInput) {
     _id
     key
     value
+    table
     variable
     active
     created_at
@@ -49,6 +58,7 @@ mutation CreateSystemParams($input: createSystemParamsInput) {
     _id
     key
     value
+    table
     variable
     active
     created_at
@@ -64,6 +74,7 @@ mutation UpdateSystemParams($input: updateSystemParamsInput) {
     key
     value
     variable
+    table
     active
     created_at
     updated_at
@@ -78,6 +89,7 @@ mutation DeleteSystemParams($input: getSystemParamsInput) {
     key
     value
     variable
+    table
     active
     created_at
     updated_at

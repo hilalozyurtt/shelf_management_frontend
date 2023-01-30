@@ -11,6 +11,7 @@ import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers
 import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
 import { GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
 import { Modal } from 'antd';
+import { GET_SYSTEM_PARAMS_BY_TABLE } from '@/modules/resolvers/systemParamsResolvers';
 
 interface DataType {
   _id: string;
@@ -48,7 +49,7 @@ const App: React.FC = () => {
   const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
   const {data:stData,loading:stLoading, error: stError} = useQuery(GET_ALL_STRUCTURES)
   const {data:pData,loading:pLoading, error: pError} = useQuery(GET_ALL_PRODUCTS)
-
+  const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"shelf"}}})
   const kontrol = async (baglanti : any) => {
     const baglantiVarMi = pData?.getAllProducts.find((s:any) => s.shelf_id === baglanti)
     return (baglantiVarMi) ? true : false
@@ -212,6 +213,14 @@ const App: React.FC = () => {
     },
   ];
 
+  const newColumns = columns.filter(function(e :any) {
+    const array = systemData?.getSystemParamsByTable.map((a:any)=>{
+      return a.variable
+    })
+    return array?.indexOf(e.dataIndex) == -1;
+  });
+
+
   if(shLoading || deleteLoading || stLoading || pLoading) return (
     <Result
       icon={<Spin size="large" />}
@@ -229,7 +238,7 @@ const App: React.FC = () => {
   return (
     <>
     {contextHolder}
-      <Table  columns={columns} dataSource={data?.getAllShelfs} />
+      <Table  columns={newColumns} dataSource={data?.getAllShelfs} />
       <Space style={{ margin: 24 }}>
         <Button><Link href={"shelf/create_shelf"}>Raf Oluştur</Link></Button>
       </Space>

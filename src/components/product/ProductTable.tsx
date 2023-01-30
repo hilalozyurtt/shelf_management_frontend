@@ -9,7 +9,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
-import { GET_ALL_SYSTEM_PARAMS } from '@/modules/resolvers/systemParamsResolvers';
+import { GET_ALL_SYSTEM_PARAMS, GET_SYSTEM_PARAMS_BY_TABLE } from '@/modules/resolvers/systemParamsResolvers';
 
 interface DataType {
   _id: string;
@@ -45,7 +45,7 @@ const App: React.FC = () => {
   const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT,  {fetchPolicy:"no-cache"})
   const {data: shData,loading: shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
   const { data: spData, loading: spLoading, error: spError } = useQuery(GET_ALL_SYSTEM_PARAMS, {fetchPolicy:"no-cache"})
-
+  const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"product"}}})
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -203,6 +203,30 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'GÜNCELLENME TARİHİ',
+      dataIndex: 'updated_at',
+      key: 'updated_at',
+      width: '20%',
+      ...getColumnSearchProps('updated_at'),
+      sorter: (a, b) => ((a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at ? -1 : 0) ),
+      sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
+      )
+    },
+    {
+      title: 'EKLENME TARİHİ',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      width: '20%',
+      ...getColumnSearchProps('created_at'),
+      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0) ),
+      sortDirections: ['descend', 'ascend'],
+      render: (_ , record) => (
+        <span>{new Date(record.created_at).toLocaleString("tr-TR")}</span>
+      )
+    },
+    {
       title: 'İŞLEM',
       key: 'islem',
       render: (_, record) => (
@@ -220,15 +244,22 @@ const App: React.FC = () => {
       ),
     },
   ];
-  
 
-  if(pLoading || deleteLoading || shLoading || spLoading ) return (
+
+  const newColumns = columns.filter(function(e :any) {
+      const array = systemData?.getSystemParamsByTable.map((a:any)=>{
+        return a.variable
+      })
+      return array?.indexOf(e.dataIndex) == -1;
+    });
+    
+  if(pLoading || deleteLoading || shLoading || spLoading || systemLoading ) return (
     <Result
       icon={<Spin size="large" />}
     />
   )
 
-  if(error || deleteError || shError || spError) return (
+  if(error || deleteError || shError || spError || systemError) return (
     <Result
       status="500"
       title="500"
@@ -239,7 +270,7 @@ const App: React.FC = () => {
   return (
     <>
     {contextHolder}
-      <Table  columns={columns} dataSource={data?.getAllProducts} />
+      <Table  columns={newColumns} dataSource={data?.getAllProducts} />
       <div className='justify-center'>
       <Space style={{ margin: 24 , width:100, justifyContent: 'center'}} >
         <div className='justify-center'><Button><Link href={"product/create_product"}>Ürün Oluştur</Link></Button></div>   

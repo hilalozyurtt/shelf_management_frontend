@@ -10,6 +10,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
 import { Modal } from 'antd';
+import { GET_SYSTEM_PARAMS_BY_TABLE } from '@/modules/resolvers/systemParamsResolvers';
 
 interface DataType {
   _id: string;
@@ -53,7 +54,7 @@ const App: React.FC = () => {
   const { data, loading:stLoading, error } = useQuery(GET_ALL_STRUCTURES)
   const { data:shData, loading:shLoading, error:shError } = useQuery(GET_ALL_SHELFS)
   const [deleteStructure, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_STRUCTURE)
-
+  const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"structure"}}})
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -177,7 +178,7 @@ const App: React.FC = () => {
       dataIndex: 'updated_at',
       key: 'updated_at',
       ...getColumnSearchProps('updated_at'),
-      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0) ),
+      sorter: (a, b) => ((a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
       render: (_ , record) => (
         <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
@@ -208,9 +209,12 @@ const App: React.FC = () => {
       ),
     },
   ];
-  const newData = columns.filter((d: any) => {
-    return d.dataIndex != "updated_at"
-  })
+  const newColumns = columns.filter(function(e :any) {
+    const array = systemData?.getSystemParamsByTable.map((a:any)=>{
+      return a.variable
+    })
+    return array?.indexOf(e.dataIndex) == -1;
+  });
 
 
   if(stLoading || deleteLoading || shLoading ) return (
@@ -230,7 +234,7 @@ const App: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Table  columns={newData} dataSource={data?.getAllStructures} />
+      <Table  columns={newColumns} dataSource={data?.getAllStructures} />
       <Space style={{ margin: 24 }}>
         <Button><Link href={"structure/create_structure"}>Bina Oluştur</Link></Button>
       </Space>

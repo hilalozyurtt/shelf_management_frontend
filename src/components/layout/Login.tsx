@@ -13,8 +13,6 @@ export default function Login() {
   const [values, setInputs] = useState({ username: "", password: "" })
 
   const onFinish = (inputs: any) => {
-    console.log(values);
-    
     loginUser()
   };
 
