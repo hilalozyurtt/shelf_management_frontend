@@ -133,7 +133,7 @@ const App: React.FC = () => {
       dataIndex: 'changed_value',
       key: 'changed_value',
       width: '30%',
-      ...getColumnSearchProps('changed_value'),
+      //...getColumnSearchProps('changed_value'),
       //sorter: (a, b) => Number(a.bina_no) - Number(b.bina_no),
       //sortDirections: ['descend', 'ascend'],
     },
