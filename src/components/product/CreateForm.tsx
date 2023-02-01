@@ -81,13 +81,13 @@ const App: React.FC = () => {
   
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
-      <Form.Item name="name" label="İsim" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+      <Form.Item name="name" label="Parça Adı" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="arac" label="Araç" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="arac" label="Araç">
         <Input name="arac" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="ozellik" label="Özellik" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true }]}>
+      <Form.Item name="ozellik" label="Özellik">
         <Input name="ozellik" onChange={handleChange}/>
       </Form.Item>
       <Form.Item name="ozellik2" label="Özellik 2">

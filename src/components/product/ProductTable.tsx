@@ -141,7 +141,7 @@ const App: React.FC = () => {
   
   const columns: ColumnsType<DataType> = [
     {
-      title: 'İSİM',
+      title: 'PARÇA ADI',
       dataIndex: 'name',
       key: 'name',
       width: '30%',
