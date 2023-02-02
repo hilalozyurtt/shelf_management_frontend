@@ -49,7 +49,7 @@ const App: React.FC = () => {
   const showModal = () => {
     Modal.error({
       title: 'Bu raf dolu!',
-      content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı siliniz.',
+      content: 'Silinmek istenen rafta ürünler bulunmakta! Önce ürünler tablosundan rafta bulunan ürünleri kaldırınız.',
     });
   };
 
