@@ -32,7 +32,7 @@ const App: React.FC = () => {
 
   const [inputs, setInputs] = useState<product>({_id:"" ,arac:"", name:"", oem_no:"", orjinal_no:"", ozellik:"", ozellik2:"", shelf_id:""})
   const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
-  const [createStructure, { data, loading, error }] = useMutation(CREATE_PRODUCT)
+  const [createProduct, { data, loading, error }] = useMutation(CREATE_PRODUCT)
 
   const handleChange = (event:any) => {
     const name = event.target.name
@@ -45,7 +45,7 @@ const App: React.FC = () => {
   };
 
   const handleSubmit = async (e: any) => {
-    await createStructure({
+    await createProduct({
         variables: {
             input: {
                 arac: inputs.arac,
