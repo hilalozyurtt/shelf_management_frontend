@@ -40,9 +40,17 @@ const App: React.FC = () => {
   const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
   const {data:pData,loading:pLoading, error: pError} = useQuery(GET_ALL_PRODUCTS)
   const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"shelf"}}})
+  
   const kontrol = async (baglanti : any) => {
     const baglantiVarMi = pData?.getAllProducts.find((s:any) => s.shelf_id === baglanti)
     return (baglantiVarMi) ? true : false
+  };
+
+  const showModal = () => {
+    Modal.error({
+      title: 'Bu raf dolu!',
+      content: 'Silinmek istenen bina raf tablosunda mevcut! Önce raf tablosundan bağlantıyı siliniz.',
+    });
   };
 
   const handleSearch = (
@@ -177,12 +185,17 @@ const App: React.FC = () => {
           <Link href={{ pathname: "/shelf/update_shelf", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
                     const sonuc = await kontrol(record._id)             
-                    await deleteShelf({
-                      variables: {
-                        input: { _id: record._id }
-                      }, refetchQueries: [GET_ALL_SHELFS]
-                    })
-                    success()
+                    if (sonuc){
+                      showModal()
+                    }
+                    else{
+                      await deleteShelf({
+                        variables: {
+                          input: { _id: record._id }
+                        }, refetchQueries: [GET_ALL_SHELFS]
+                      })
+                      success()
+                    }
                 }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),

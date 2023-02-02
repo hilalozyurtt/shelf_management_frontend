@@ -46,6 +46,7 @@ const App: React.FC = () => {
   const {data: shData,loading: shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
   const { data: spData, loading: spLoading, error: spError } = useQuery(GET_ALL_SYSTEM_PARAMS, {fetchPolicy:"no-cache"})
   const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"product"}}})
+  
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
