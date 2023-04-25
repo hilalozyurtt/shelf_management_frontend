@@ -6,6 +6,8 @@ export const GET_SHELF = gql`
         getShelf(input: $input) {
         _id
         raf_no
+        structure_id
+        bina_no
         active
         created_at
         updated_at
@@ -18,6 +20,8 @@ export const GET_ALL_SHELFS = gql`
         getAllShelfs {
         _id
         raf_no
+        structure_id
+        bina_no
         active
         created_at
         updated_at
@@ -30,6 +34,8 @@ export const CREATE_SHELF = gql`
         createShelf(input: $input) {
         _id
         raf_no
+        structure_id
+        bina_no
         active
         created_at
         updated_at
@@ -42,6 +48,8 @@ export const UPDATE_SHELF = gql`
         updateShelf(input: $input) {
         _id
         raf_no
+        structure_id
+        bina_no
         active
         created_at
         updated_at
@@ -54,6 +62,8 @@ export const DELETE_SHELF = gql`
         deleteShelf(input: $input) {
         _id
         raf_no
+        structure_id
+        bina_no
         active
         created_at
         updated_at

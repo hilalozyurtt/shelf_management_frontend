@@ -14,6 +14,7 @@ import { GET_ALL_SYSTEM_PARAMS, GET_SYSTEM_PARAMS_BY_TABLE } from '@/modules/res
 interface DataType {
   _id: string;
   raf_no: string;
+  bina_no: string;
   name: string;
   arac: string;
   ozellik: string;
@@ -201,6 +202,15 @@ const App: React.FC = () => {
       width: '20%',
       ...getColumnSearchProps('raf_no'),
       sorter: (a, b) => ((a.raf_no < b.raf_no) ? 1 : (a.raf_no > b.raf_no ? -1 : 0) ),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'BİNA NUMARASI',
+      dataIndex: 'bina_no',
+      key: 'bina_no',
+      width: '20%',
+      ...getColumnSearchProps('bina_no'),
+      sorter: (a, b) => ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0) ),
       sortDirections: ['descend', 'ascend'],
     },
     {

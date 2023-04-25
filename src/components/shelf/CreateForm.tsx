@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_SHELF} from '@/modules/resolvers/shelfResolvers';
 import Router from "next/router";
 import Link from 'next/link';
+import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
 
 const { Option } = Select;
 
@@ -18,13 +19,15 @@ const tailLayout = {
 type shelf = {
     _id: string,
     raf_no: string,
+    structure_id: string
 }
 
 const App: React.FC = () => {
   const [form] = Form.useForm();
 
-  const [inputs, setInputs] = useState<shelf>({_id:"", raf_no:""})
+  const [inputs, setInputs] = useState<shelf>({_id:"", raf_no:"", structure_id:""})
   const [createShelf, { data, loading, error }] = useMutation(CREATE_SHELF)
+  const { data:stData, loading:stLoading, error:stError } = useQuery(GET_ALL_STRUCTURES)
 
   const handleChange = (event:any) => {
     const name = event.target.name
@@ -32,11 +35,16 @@ const App: React.FC = () => {
     setInputs(values => ({ ...values, [name]: value }))
   }
 
+  const onChange = (value: string) => {
+    setInputs(values => ({ ...values, ["structure_id"]: value }))
+  };
+
   const handleSubmit = async (e: any) => {
     await createShelf({
         variables: {
             input: {
                 raf_no: inputs.raf_no,
+                structure_id: inputs.structure_id,
             }
         }
     })
@@ -47,13 +55,13 @@ const App: React.FC = () => {
     form.resetFields();
   };
   
-  if(loading) return (
+  if(stLoading || loading) return (
     <Result
       icon={<Spin size="large" />}
     />
   )
 
-  if(error) return (
+  if(stError || error) return (
     <Result
       status="500"
       title="500"
@@ -65,6 +73,13 @@ const App: React.FC = () => {
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
       <Form.Item name="raf_no" label="Raf Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="raf_no" onChange={handleChange}/>
+      </Form.Item>
+      <Form.Item name="structure_id" label="Bina Numarası"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Select placeholder="Bina numarası seçiniz." onChange={onChange}  allowClear >
+        {stData?.getAllStructures.map((s:any)=>{
+            return <option key={s._id} value={s._id}>{s.bina_no} </option>
+        })}
+        </Select>
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="default" htmlType="submit">

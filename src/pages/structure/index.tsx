@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="overflow-auto">
       <h1 className="text-2xl font-bold ">
-        Bina Yönetimi
+        Depo Yönetimi
       </h1>
       <hr />
       <StructureTable />

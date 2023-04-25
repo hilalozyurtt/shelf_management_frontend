@@ -11,10 +11,12 @@ import { DELETE_SHELF, GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers
 import { GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
 import { Modal } from 'antd';
 import { GET_SYSTEM_PARAMS_BY_TABLE } from '@/modules/resolvers/systemParamsResolvers';
+import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
 
 interface DataType {
   _id: string;
   raf_no: string;
+  bina_no: string;
   activate: boolean;
   created_at: string;
   updated_at: string;
@@ -36,8 +38,10 @@ const App: React.FC = () => {
     });
   };
 
+  
   const { data, loading:shLoading, error } = useQuery(GET_ALL_SHELFS)
   const [deleteShelf, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SHELF)
+  const {data:stData,loading:stLoading, error: stError} = useQuery(GET_ALL_STRUCTURES)
   const {data:pData,loading:pLoading, error: pError} = useQuery(GET_ALL_PRODUCTS)
   const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"shelf"}}})
   
@@ -156,6 +160,15 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'BİNA NUMARASI',
+      dataIndex: 'bina_no',
+      key: 'bina_no',
+      width: '30%',
+      ...getColumnSearchProps('bina_no'), 
+      sorter: (a, b) =>  ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0) ),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
       title: 'EKLEME TARİHİ',
       dataIndex: 'created_at',
       key: 'created_at',
@@ -184,7 +197,7 @@ const App: React.FC = () => {
         <Space size="middle">
           <Link href={{ pathname: "/shelf/update_shelf", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
-                    const sonuc = await kontrol(record._id)             
+                    const sonuc = await kontrol(record._id)
                     if (sonuc){
                       showModal()
                     }
@@ -210,13 +223,13 @@ const App: React.FC = () => {
   });
 
 
-  if(shLoading || deleteLoading || pLoading) return (
+  if(shLoading || deleteLoading ||stLoading ||  pLoading) return (
     <Result
       icon={<Spin size="large" />}
     />
   )
 
-  if(error || deleteError || pError ) return (
+  if(error || deleteError || stError || pError ) return (
     <Result
       status="500"
       title="500"

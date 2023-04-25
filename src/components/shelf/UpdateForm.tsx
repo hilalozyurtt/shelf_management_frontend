@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_SHELF, UPDATE_SHELF } from '@/modules/resolvers/shelfResolvers';
 import Router from "next/router";
 import Link from 'next/link';
+import { GET_ALL_STRUCTURES } from '@/modules/resolvers/structureResolvers';
 
 const { Option } = Select;
 
@@ -18,13 +19,15 @@ const tailLayout = {
 type shelf = {
     _id: string,
     raf_no: string,
+    structure_id: string,
 }
 
 const App: React.FC = (props: any) => {
   
   const [form] = Form.useForm();
-  const [inputs, setInputs] = useState<shelf>({ _id: "", raf_no: "" })
+  const [inputs, setInputs] = useState<shelf>({ _id: "", raf_no: "", structure_id: ""})
   const { data: shData, loading: shLoading, error: shError } = useQuery(GET_SHELF, { variables: { input: { _id: props.shelfId } } })
+  const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_STRUCTURES)
   const [updateShelf, { data, loading, error }] = useMutation(UPDATE_SHELF)
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -41,12 +44,17 @@ const App: React.FC = (props: any) => {
     setInputs(values => ({ ...values, [name]: value }))
   }
 
+  const onChange = (value: string) => {
+    setInputs(values => ({ ...values, ["structure_id"]: value }))
+  };
+
   const handleSubmit = async (e: any) => {
     await updateShelf({
         variables: {
             input: {
                 _id: inputs._id,
                 raf_no: inputs.raf_no,
+                structure_id: inputs.structure_id
             }
         }
     })
@@ -61,13 +69,13 @@ const App: React.FC = (props: any) => {
     form.resetFields();
   };
 
-  if(loading || shLoading) return (
+  if(stLoading || loading || shLoading) return (
     <Result
       icon={<Spin size="large" />}
     />
   )
 
-  if(loading || shLoading) return (
+  if(stLoading || loading || shLoading) return (
     <Result
       status="500"
       title="500"
@@ -81,6 +89,13 @@ const App: React.FC = (props: any) => {
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} initialValues={shData?.getShelf} layout= "vertical">
       <Form.Item name="raf_no" label="Raf Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="raf_no" onChange={handleChange} />
+      </Form.Item>
+      <Form.Item name="structure_id" label="Bina Numarası"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Select placeholder="Bina numarası seçiniz." onChange={onChange}  allowClear>
+        {stData?.getAllStructures.map((s:any)=>{
+            return <option key={s._id} value={s._id}>{s.bina_no} </option>
+        })}
+        </Select>
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="default" htmlType="submit">
