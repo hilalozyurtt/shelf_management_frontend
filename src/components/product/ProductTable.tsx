@@ -142,7 +142,7 @@ const App: React.FC = () => {
   
   const columns: ColumnsType<DataType> = [
     {
-      title: 'PARÇA ADI',
+      title: 'ÜRÜN ADI',
       dataIndex: 'name',
       key: 'name',
       width: '30%',
@@ -151,7 +151,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'ARAÇ',
+      title: 'ÜRÜN MARKASI',
       dataIndex: 'arac',
       key: 'arac',
       width: '20%',
@@ -178,7 +178,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'OEM NUMARASI',
+      title: 'ÜRÜN NUMARASI',
       dataIndex: 'oem_no',
       key: 'oem_no',
       width: '20%',
@@ -187,7 +187,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'ÜRETİCİ NUMARASI',
+      title: 'ÜRÜN BOYUTU',
       dataIndex: 'orjinal_no',
       key: 'orjinal_no',
       width: '20%',
@@ -205,7 +205,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'BİNA NUMARASI',
+      title: 'DEPO',
       dataIndex: 'bina_no',
       key: 'bina_no',
       width: '20%',

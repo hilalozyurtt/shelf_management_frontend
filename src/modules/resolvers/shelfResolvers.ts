@@ -35,7 +35,6 @@ export const CREATE_SHELF = gql`
         _id
         raf_no
         structure_id
-        bina_no
         active
         created_at
         updated_at

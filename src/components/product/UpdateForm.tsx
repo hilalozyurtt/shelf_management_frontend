@@ -95,10 +95,10 @@ const App: React.FC = (props: any) => {
 
   return (
     <Form {...layout}  form={form} name="control-hooks" onFinish={handleSubmit} initialValues={pData?.getProduct} layout= "vertical">
-      <Form.Item name="name" label="Parça Adı" labelAlign="right" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+      <Form.Item name="name" label="Ürün Adı" labelAlign="right" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="arac" label="Araç" labelAlign="right">
+      <Form.Item name="arac" label="Ürün Markası" labelAlign="right">
         <Input name="arac" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="ozellik" label="Özellik" labelAlign="right">
@@ -107,10 +107,10 @@ const App: React.FC = (props: any) => {
       <Form.Item name="ozellik2" label="Özellik 2">
         <Input name="ozellik2" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="oem_no" label="OEM No">
+      <Form.Item name="oem_no" label="Ürün Kodu">
         <Input name="oem_no" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="orjinal_no" label="Üretici No" >
+      <Form.Item name="orjinal_no" label="Ürün Boyutu" >
         <Input name="orjinal_no" onChange={handleChange} />
       </Form.Item>
       <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>

@@ -81,10 +81,10 @@ const App: React.FC = () => {
   
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={handleSubmit} layout= "vertical">
-      <Form.Item name="name" label="Parça Adı" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+      <Form.Item name="name" label="Ürün Adı" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="name" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="arac" label="Araç">
+      <Form.Item name="arac" label="Ürün Markası">
         <Input name="arac" onChange={handleChange}/>
       </Form.Item>
       <Form.Item name="ozellik" label="Özellik">
@@ -93,10 +93,10 @@ const App: React.FC = () => {
       <Form.Item name="ozellik2" label="Özellik 2">
         <Input name="ozellik2" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="oem_no" label="OEM No" >
+      <Form.Item name="oem_no" label="Ürün Kodu" >
         <Input name="oem_no" onChange={handleChange}/>
       </Form.Item>
-      <Form.Item name="orjinal_no" label="Üretici No" >
+      <Form.Item name="orjinal_no" label="Ürün Boyutu" >
         <Input name="orjinal_no" onChange={handleChange}/>
       </Form.Item>
       <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
@@ -105,7 +105,7 @@ const App: React.FC = () => {
             return <option key={s._id} value={s._id}>{s.raf_no} </option>
         })}
         </Select>
-      </Form.Item>
+      </Form.Item>  
       <Form.Item {...tailLayout}>
         <Button type="default" htmlType="submit">
           Kaydet
