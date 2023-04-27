@@ -35,9 +35,6 @@ const App: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [messageApi, contextHolder] = message.useMessage();
-  const [stock, setStock] = useState(1)
-  const [decsStock, setDecsStock] = useState(1)
-  const [bb, setBB] = useState(false)
 
   const success = () => {
     messageApi.open({
@@ -247,41 +244,6 @@ const App: React.FC = () => {
       dataIndex: 'stock',
       key: 'stock',
       width: '20%',
-      render: (_, record) => {
-        //setStock(record.stock)
-        if (!bb) {
-          setStock(record.stock)
-          console.log("hi")
-          
-        }
-        console.log(decsStock)
-        setBB(() => true)
-        return <>
-          <span>Stok: {bb ? stock : record.stock}</span><br />
-          <label>Düş. Miktar</label>
-          <label>{stock}</label>
-
-          <input type='number' name='stock' defaultValue={1} onChange={(event: any) => {
-            setDecsStock(event.target.value)
-            
-          }} />
-          <button onClick={async () => {
-            await decStock({
-              variables: {
-                input: {
-                  _id: record._id,
-                  //@ts-ignore
-                  stock: parseInt(decsStock)
-                }
-              }
-            })
-            await setBB(() => true)
-            setStock(() => stock - decsStock)
-            await setDecsStock(1)
-          }}><Tag color='blue'>Stok düş</Tag></button >
-
-        </>
-      }
     },
     {
       title: 'İŞLEM',
@@ -302,9 +264,6 @@ const App: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
-    console.log("asd")
-  }, [stock])
   const newColumns = columns.filter(function (e: any) {
     const array = systemData?.getSystemParamsByTable.map((a: any) => {
       return a.variable

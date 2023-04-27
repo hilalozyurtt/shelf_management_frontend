@@ -24,13 +24,14 @@ type product = {
     orjinal_no: string,
     ozellik: string,
     ozellik2: string,
-    shelf_id: string
+    shelf_id: string,
+    stock: number
 }
 
 const App: React.FC = () => {
   const [form] = Form.useForm();
 
-  const [inputs, setInputs] = useState<product>({_id:"" ,arac:"", name:"", oem_no:"", orjinal_no:"", ozellik:"", ozellik2:"", shelf_id:""})
+  const [inputs, setInputs] = useState<product>({_id:"" ,arac:"", name:"", oem_no:"", orjinal_no:"", ozellik:"", ozellik2:"", shelf_id:"", stock:0})
   const { data: stData, loading: stLoading, error: stError } = useQuery(GET_ALL_SHELFS)
   const [createProduct, { data, loading, error }] = useMutation(CREATE_PRODUCT)
 
@@ -54,7 +55,9 @@ const App: React.FC = () => {
                 orjinal_no: inputs.orjinal_no,
                 ozellik: inputs.ozellik,
                 ozellik2: inputs.ozellik2,
-                shelf_id: inputs.shelf_id
+                shelf_id: inputs.shelf_id,
+                //@ts-ignore
+                stock: parseInt(inputs.stock)
             }
         }
     })
@@ -99,10 +102,13 @@ const App: React.FC = () => {
       <Form.Item name="orjinal_no" label="Ürün Boyutu" >
         <Input name="orjinal_no" onChange={handleChange}/>
       </Form.Item>
+      <Form.Item name="stock" label="Stok" >
+        <Input name="stock" type='number' onChange={handleChange}/>
+      </Form.Item>
       <Form.Item name="shelf_id" label="Raf No"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Select placeholder="Raf numarası seçiniz." onChange={onChange}  allowClear >
         {stData?.getAllShelfs.map((s:any)=>{
-            return <option key={s._id} value={s._id}>{s.raf_no} </option>
+            return <option key={s._id} value={s._id}>Raf No: <span className='text-red-700'>{s.raf_no}</span>  Bina No: <span className='text-green-700'>{s.bina_no}</span>  </option>
         })}
         </Select>
       </Form.Item>  
