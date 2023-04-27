@@ -160,7 +160,7 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'BİNA NUMARASI',
+      title: 'DEPO',
       dataIndex: 'bina_no',
       key: 'bina_no',
       width: '30%',

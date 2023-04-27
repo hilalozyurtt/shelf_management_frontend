@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CloseOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, EditOutlined, MinusOutlined, PlusOutlined, ReconciliationOutlined, SearchOutlined } from '@ant-design/icons';
 import { InputRef, Result, Spin, Tag } from 'antd';
 import { Button, Input, message, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
@@ -216,6 +216,15 @@ const App: React.FC = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'STOK',
+      dataIndex: 'stock',
+      key: 'stock',
+      width: '20%',
+      ...getColumnSearchProps('stock'),
+      sorter: (a, b) => ((a.stock < b.stock) ? 1 : (a.stock > b.stock ? -1 : 0)),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
       title: 'GÜNCELLENME TARİHİ',
       dataIndex: 'updated_at',
       key: 'updated_at',
@@ -240,16 +249,10 @@ const App: React.FC = () => {
       )
     },
     {
-      title: 'STOK',
-      dataIndex: 'stock',
-      key: 'stock',
-      width: '20%',
-    },
-    {
       title: 'İŞLEM',
       key: 'islem',
       render: (_, record) => (
-        <Space size="middle">
+        <Space size="small">
           <Link href={{ pathname: "/product/update_product", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
             await deleteProduct({

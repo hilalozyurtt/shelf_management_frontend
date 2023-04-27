@@ -90,8 +90,8 @@ const App: React.FC = (props: any) => {
       <Form.Item name="raf_no" label="Raf Numarası" rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
         <Input name="raf_no" onChange={handleChange} />
       </Form.Item>
-      <Form.Item name="structure_id" label="Bina Numarası"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
-        <Select placeholder="Bina numarası seçiniz." onChange={onChange}  allowClear>
+      <Form.Item name="structure_id" label="Depo"  rules={[{ required: true, message: 'Lütfen alanı doldurunuz!', whitespace:true}]}>
+        <Select placeholder="Depo seçiniz." onChange={onChange}  allowClear>
         {stData?.getAllStructures.map((s:any)=>{
             return <option key={s._id} value={s._id}>{s.bina_no} </option>
         })}
