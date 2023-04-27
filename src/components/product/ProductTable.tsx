@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CloseOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { InputRef, Result, Spin, Tag } from 'antd';
 import { Button, Input, message, Space, Table } from 'antd';
@@ -8,7 +8,7 @@ import Highlighter from 'react-highlight-words';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { GET_ALL_SHELFS } from '@/modules/resolvers/shelfResolvers';
-import { DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
+import { DEC_PRODCUT_STOCK, DELETE_PRODUCT, GET_ALL_PRODUCTS } from '@/modules/resolvers/productResolvers';
 import { GET_ALL_SYSTEM_PARAMS, GET_SYSTEM_PARAMS_BY_TABLE } from '@/modules/resolvers/systemParamsResolvers';
 
 interface DataType {
@@ -21,6 +21,7 @@ interface DataType {
   ozellik2: string;
   oem_no: string;
   orjinal_no: string;
+  stock: number;
   activate: boolean;
   created_at: string;
   updated_at: string;
@@ -34,6 +35,9 @@ const App: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [messageApi, contextHolder] = message.useMessage();
+  const [stock, setStock] = useState(1)
+  const [decsStock, setDecsStock] = useState(1)
+  const [bb, setBB] = useState(false)
 
   const success = () => {
     messageApi.open({
@@ -42,12 +46,13 @@ const App: React.FC = () => {
     });
   };
 
-  const { data, loading: pLoading, error } = useQuery(GET_ALL_PRODUCTS, {fetchPolicy:"no-cache"})
-  const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT,  {fetchPolicy:"no-cache"})
-  const {data: shData,loading: shLoading, error: shError} = useQuery(GET_ALL_SHELFS, {fetchPolicy:"no-cache"})
-  const { data: spData, loading: spLoading, error: spError } = useQuery(GET_ALL_SYSTEM_PARAMS, {fetchPolicy:"no-cache"})
-  const { data: systemData, loading: systemLoading, error: systemError} = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, {variables: {input: { table:"product"}}})
-  
+  const { data, loading: pLoading, error } = useQuery(GET_ALL_PRODUCTS, { fetchPolicy: "no-cache" })
+  const [deleteProduct, { data: deleteData, loading: deleteLoading, error: deleteError }] = useMutation(DELETE_PRODUCT, { fetchPolicy: "network-only" })
+  const { data: shData, loading: shLoading, error: shError } = useQuery(GET_ALL_SHELFS, { fetchPolicy: "no-cache" })
+  const { data: spData, loading: spLoading, error: spError } = useQuery(GET_ALL_SYSTEM_PARAMS, { fetchPolicy: "no-cache" })
+  const { data: systemData, loading: systemLoading, error: systemError } = useQuery(GET_SYSTEM_PARAMS_BY_TABLE, { variables: { input: { table: "product" } } })
+  const [decStock, { data: stockData, loading: stockLoading, error: stockError }] = useMutation(DEC_PRODCUT_STOCK)
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -107,8 +112,8 @@ const App: React.FC = () => {
             onClick={() => {
               close();
             }}
-            icon= {<CloseOutlined />}
-          >   
+            icon={<CloseOutlined />}
+          >
           </Button>
         </Space>
       </div>
@@ -139,7 +144,7 @@ const App: React.FC = () => {
       ),
   });
 
-  
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'ÜRÜN ADI',
@@ -147,7 +152,7 @@ const App: React.FC = () => {
       key: 'name',
       width: '30%',
       ...getColumnSearchProps('name'),
-      sorter: (a, b) => ((a.name < b.name) ? 1 : (a.name > b.name ? -1 : 0) ),
+      sorter: (a, b) => ((a.name < b.name) ? 1 : (a.name > b.name ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -156,7 +161,7 @@ const App: React.FC = () => {
       key: 'arac',
       width: '20%',
       ...getColumnSearchProps('arac'),
-      sorter: (a, b) => ((a.arac < b.arac) ? 1 : (a.arac > b.arac ? -1 : 0) ),
+      sorter: (a, b) => ((a.arac < b.arac) ? 1 : (a.arac > b.arac ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -165,7 +170,7 @@ const App: React.FC = () => {
       key: 'ozellik',
       width: '20%',
       ...getColumnSearchProps('ozellik'),
-      sorter: (a, b) => ((a.ozellik < b.ozellik) ? 1 : (a.ozellik > b.ozellik ? -1 : 0) ),
+      sorter: (a, b) => ((a.ozellik < b.ozellik) ? 1 : (a.ozellik > b.ozellik ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -174,7 +179,7 @@ const App: React.FC = () => {
       key: 'ozellik2',
       width: '20%',
       ...getColumnSearchProps('ozellik2'),
-      sorter: (a, b) => ((a.ozellik2 < b.ozellik2) ? 1 : (a.ozellik2 > b.ozellik2 ? -1 : 0) ),
+      sorter: (a, b) => ((a.ozellik2 < b.ozellik2) ? 1 : (a.ozellik2 > b.ozellik2 ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -183,7 +188,7 @@ const App: React.FC = () => {
       key: 'oem_no',
       width: '20%',
       ...getColumnSearchProps('oem_no'),
-      sorter: (a, b) => ((a.oem_no < b.oem_no) ? 1 : (a.oem_no > b.oem_no ? -1 : 0) ),
+      sorter: (a, b) => ((a.oem_no < b.oem_no) ? 1 : (a.oem_no > b.oem_no ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -192,7 +197,7 @@ const App: React.FC = () => {
       key: 'orjinal_no',
       width: '20%',
       ...getColumnSearchProps('orjinal_no'),
-      sorter: (a, b) => ((a.orjinal_no < b.orjinal_no) ? 1 : (a.orjinal_no > b.orjinal_no ? -1 : 0) ),
+      sorter: (a, b) => ((a.orjinal_no < b.orjinal_no) ? 1 : (a.orjinal_no > b.orjinal_no ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -201,7 +206,7 @@ const App: React.FC = () => {
       key: 'raf_no',
       width: '20%',
       ...getColumnSearchProps('raf_no'),
-      sorter: (a, b) => ((a.raf_no < b.raf_no) ? 1 : (a.raf_no > b.raf_no ? -1 : 0) ),
+      sorter: (a, b) => ((a.raf_no < b.raf_no) ? 1 : (a.raf_no > b.raf_no ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -210,7 +215,7 @@ const App: React.FC = () => {
       key: 'bina_no',
       width: '20%',
       ...getColumnSearchProps('bina_no'),
-      sorter: (a, b) => ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0) ),
+      sorter: (a, b) => ((a.bina_no < b.bina_no) ? 1 : (a.bina_no > b.bina_no ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -219,9 +224,9 @@ const App: React.FC = () => {
       key: 'updated_at',
       width: '20%',
       ...getColumnSearchProps('updated_at'),
-      sorter: (a, b) => ((a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at ? -1 : 0) ),
+      sorter: (a, b) => ((a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
-      render: (_ , record) => (
+      render: (_, record) => (
         <span>{new Date(record.updated_at).toLocaleString("tr-TR")}</span>
       )
     },
@@ -231,11 +236,52 @@ const App: React.FC = () => {
       key: 'created_at',
       width: '20%',
       ...getColumnSearchProps('created_at'),
-      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0) ),
+      sorter: (a, b) => ((a.created_at < b.created_at) ? 1 : (a.created_at > b.created_at ? -1 : 0)),
       sortDirections: ['descend', 'ascend'],
-      render: (_ , record) => (
+      render: (_, record) => (
         <span>{new Date(record.created_at).toLocaleString("tr-TR")}</span>
       )
+    },
+    {
+      title: 'STOK',
+      dataIndex: 'stock',
+      key: 'stock',
+      width: '20%',
+      render: (_, record) => {
+        //setStock(record.stock)
+        if (!bb) {
+          setStock(record.stock)
+          console.log("hi")
+          
+        }
+        console.log(decsStock)
+        setBB(() => true)
+        return <>
+          <span>Stok: {bb ? stock : record.stock}</span><br />
+          <label>Düş. Miktar</label>
+          <label>{stock}</label>
+
+          <input type='number' name='stock' defaultValue={1} onChange={(event: any) => {
+            setDecsStock(event.target.value)
+            
+          }} />
+          <button onClick={async () => {
+            await decStock({
+              variables: {
+                input: {
+                  _id: record._id,
+                  //@ts-ignore
+                  stock: parseInt(decsStock)
+                }
+              }
+            })
+            await setBB(() => true)
+            setStock(() => stock - decsStock)
+            await setDecsStock(1)
+          }}><Tag color='blue'>Stok düş</Tag></button >
+
+        </>
+      }
     },
     {
       title: 'İŞLEM',
@@ -244,53 +290,55 @@ const App: React.FC = () => {
         <Space size="middle">
           <Link href={{ pathname: "/product/update_product", query: { id: record._id } }}><Tag color={"gold"}><EditOutlined /> Düzenle</Tag></Link>
           <button onClick={async () => {
-                    await deleteProduct({
-                      variables: {
-                        input: { _id: record._id }
-                      }, refetchQueries: [GET_ALL_PRODUCTS]
-                    })
-                    success()
-                  }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
+            await deleteProduct({
+              variables: {
+                input: { _id: record._id }
+              }
+            })
+            success()
+          }}><Tag color={"red"}><DeleteOutlined /> Sil</Tag></button>
         </Space>
       ),
     },
   ];
 
+  useEffect(() => {
+    console.log("asd")
+  }, [stock])
+  const newColumns = columns.filter(function (e: any) {
+    const array = systemData?.getSystemParamsByTable.map((a: any) => {
+      return a.variable
+    })
+    return array?.indexOf(e.dataIndex) == -1;
+  });
 
-  const newColumns = columns.filter(function(e :any) {
-      const array = systemData?.getSystemParamsByTable.map((a:any)=>{
-        return a.variable
-      })
-      return array?.indexOf(e.dataIndex) == -1;
-    });
-    
-  if(pLoading || deleteLoading || shLoading || spLoading || systemLoading ) return (
+  if (pLoading || deleteLoading || shLoading || spLoading || systemLoading) return (
     <Result
       icon={<Spin size="large" />}
     />
   )
 
-  if(error || deleteError || shError || spError || systemError) return (
+  if (error || deleteError || shError || spError || systemError) return (
     <Result
       status="500"
       title="500"
       subTitle="Üzgünüz, bir hata oluştu."
-  />
+    />
   )
-  
+
   return (
     <>
-    {contextHolder}
-      <Table  columns={newColumns} dataSource={data?.getAllProducts} />
+      {contextHolder}
+      <Table columns={newColumns} dataSource={data?.getAllProducts} />
       <div className='justify-center'>
-      <Space style={{ margin: 24 , width:100, justifyContent: 'center'}} >
-        <div className='justify-center'><Button><Link href={"product/create_product"}>Ürün Oluştur</Link></Button></div>   
-      </Space>
+        <Space style={{ margin: 24, width: 100, justifyContent: 'center' }} >
+          <div className='justify-center'><Button><Link href={"product/create_product"}>Ürün Oluştur</Link></Button></div>
+        </Space>
       </div>
 
     </>
   );
-  
+
 };
 
 export default App;
