@@ -12,7 +12,7 @@ const layout = {
   wrapperCol: { span: 8 },
 };
 const tailLayout = {
-  wrapperCol: { offset: 3, span: 16 },
+  wrapperCol: { offset: 3, span: 16 }, 
 };
 
 type structure = {
